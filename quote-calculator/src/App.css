@@ -1,0 +1,90 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.navbar {
+  padding: 1rem; 
+}
+
+.navbar-brand {
+  font-size: 1.25rem; 
+  font-weight: bold; 
+}
+
+.navbar-title {
+  margin-left: 10px; 
+  color: white; 
+}
+
+.navbar-brand img {
+  margin-right: 15px;
+  margin-left: 15px; 
+  width: 70px;
+  height:70px;
+}
+.steps-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  margin: 0 10px; /* Spacing between steps */
+}
+
+.step-icon {
+  font-size: 24px; /* Adjust as needed */
+}
+
+.step.active {
+  font-weight: bold; /* Highlight the active step */
+}
+
+.step.active .step-icon {
+  color: #007bff; /* Active icon color */
+}
+
+.step.active span {
+  margin-left: 10px; /* Space between icon and title */
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}

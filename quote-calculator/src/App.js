@@ -85,6 +85,7 @@ function App() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    countryCode: '',
     contact: '',
     email: '',
     country: '',
@@ -94,8 +95,12 @@ function App() {
     qn2: '',
     qn3: '',
     qn4: '',
-    qn5: '',
-    address: '',
+    countryTwo: '',
+    state: '',
+    city: '',
+    postalCode: '',
+    street: '',
+    unit: '',
     qn6: '',
     qn7: '',
     qn8: '',
@@ -150,10 +155,9 @@ function App() {
       case 1:
         return formData.qn1 && formData.qn2 && formData.qn3;
       case 2:
-        const isValidPostalCode = /^\d{6}$/.test(formData.qn5);
-        return formData.qn4 && formData.qn5 && formData.qn6 && formData.qn7 && formData.qn8 && isValidPostalCode;
+        return formData.qn4 && formData.qn6 && formData.qn7 && formData.qn8;
       case 3:
-        if (formData.length && formData.width && formData.height) {
+        if (formData.length && formData.width && formData.height && (formData.length * formData.width * formData.height>=1)) {
           calculateVolume();
         } else {
           return false;
@@ -242,7 +246,7 @@ function App() {
     html2pdf()
       .from(element)
       .set(options)
-      .save('output.pdf')
+      .save(`${formData.companyName}-QuoteEstimation.pdf`)
       .catch(err => console.error(err));
   }
 

@@ -4,6 +4,7 @@ import { Container, Grid, TextField, Typography, Box } from '@mui/material';
 
 const TabThree = ({ formData, onFormDataChange }) => {
 
+    const [error, setError] = useState(null);
     const [widthError, setWidthError] = useState(null);
     const [lengthError, setLengthError] = useState(null);
     const [heightError, setHeightError] = useState(null);
@@ -34,6 +35,13 @@ const TabThree = ({ formData, onFormDataChange }) => {
             }
             
         }
+        // if(formData.width && formData.length && formData.height){
+        //     if(formData.width * formData.length * formData.height <1){
+        //         setError("Total volume has to be >= 1 cubic metres");
+        //     }else{
+        //         setError(null);
+        //     }
+        // }
 
         //calculateVolume();
     }

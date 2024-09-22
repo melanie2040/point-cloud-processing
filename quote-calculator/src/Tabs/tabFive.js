@@ -12,7 +12,6 @@ const TabFive = ({ formData, onFormDataChange }) => {
     return (
 
         <Container sx={{ mt: 5, width: '100%' }}>
-            <Typography variant="h4" color="green">PDF has been generated!</Typography>
             <Card variant="outlined" sx={{ marginBottom: 2 }}>
                 <CardContent>
                     <Grid container spacing={2}>
@@ -25,7 +24,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                         <Grid item xs={6} sm={6}>
                             <Typography variant="h6" align="left">Contact</Typography>
                             <Typography variant="body1" align="left">
-                                {formData.contact}
+                                +{formData.countryCode} {formData.contact}
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={12}>
@@ -97,7 +96,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                         <Grid item xs={12} sm={12}>
                             <Typography variant="h6" align="left">Address: </Typography>
                             <Typography variant="body1" align="left">
-                            {formData.qn5}
+                            {formData.street}, {formData.unit}, {formData.city}, {formData.state}, {formData.countryTwo}, {formData.postalCode}, 
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={12}>

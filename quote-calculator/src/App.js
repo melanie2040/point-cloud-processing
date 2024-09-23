@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import dcon from "./dC.svg";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import TabZero from './Tabs/tabZero';
 import TabOne from './Tabs/tabOne';
 import TabTwo from './Tabs/tabTwo';
@@ -13,10 +13,13 @@ import html2pdf from 'html2pdf.js';
 import { AppBar, Toolbar, Typography, Button, Card, CardHeader, CardContent, Container, Grid, Box } from '@mui/material';
 
 function App() {
+  const tabSixContentRef = useRef();
+
   const [currentTab, setCurrentTab] = useState(0);
   const totalTabs = 6;
   const [validationErrors, setValidationErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+
+  const [error, setError] = useState(null);
 
 
   const handleNextPrev = (direction) => {
@@ -41,17 +44,17 @@ function App() {
   const renderTabContent = () => {
     switch (currentTab) {
       case 0:
-        return <TabZero formData={formData} onFormDataChange={handleFormDataChange} />;
+        return <TabZero setMainError={setError} formData={formData} onFormDataChange={handleFormDataChange} />;
       case 1:
-        return <TabOne formData={formData} onFormDataChange={handleFormDataChange} />;
+        return <TabOne setMainError={setError} formData={formData} onFormDataChange={handleFormDataChange} />;
       case 2:
-        return <TabTwo formData={formData} onFormDataChange={handleFormDataChange} />;
+        return <TabTwo setMainError={setError} formData={formData} onFormDataChange={handleFormDataChange} />;
       case 3:
-        return <TabThree formData={formData} onFormDataChange={handleFormDataChange} />;
+        return <TabThree setMainError={setError} formData={formData} onFormDataChange={handleFormDataChange} />;
       case 4:
-        return <TabFour formData={formData} onFormDataChange={handleFormDataChange} />;
+        return <TabFour setMainError={setError} formData={formData} onFormDataChange={handleFormDataChange} />;
       case 5:
-        return <TabFive formData={formData} />;
+        return <TabFive setMainError={setError} formData={formData} />;
 
       default:
         return null;
@@ -151,13 +154,13 @@ function App() {
   const validateTab = (tab) => {
     switch (tab) {
       case 0:
-        return formData.contact && formData.email && formData.firstName && formData.lastName && formData.country && formData.industry && formData.companyName;
+        return formData.contact && formData.email && formData.firstName && formData.lastName && formData.country && formData.industry && formData.companyName && !error;
       case 1:
         return formData.qn1 && formData.qn2 && formData.qn3;
       case 2:
         return formData.qn4 && formData.qn6 && formData.qn7 && formData.qn8;
       case 3:
-        if (formData.length && formData.width && formData.height && (formData.length * formData.width * formData.height>=1)) {
+        if (formData.length && formData.width && formData.height && (formData.length * formData.width * formData.height >= 1)) {
           calculateVolume();
         } else {
           return false;
@@ -181,17 +184,37 @@ function App() {
 
     setCurrentTab(5);
 
-    const doc = new jsPDF();
+    // const doc = new jsPDF();
 
-    doc.setFontSize(16);
-    doc.text('Full name: ' + formData.firstName + ' ' + formData.lastName, 10, 10);
-    doc.text('Contact: ' + formData.contact, 10, 20);
-    doc.text('Email: ' + formData.email, 10, 30);
-    doc.text('Country: ' + formData.country, 10, 40);
-    doc.text('Industry: ' + formData.industry, 10, 50);
-    doc.text('Company: ' + formData.companyName, 10, 60);
+    // doc.setFontSize(16);
+    // doc.text('Full name: ' + formData.firstName + ' ' + formData.lastName, 10, 10);
+    // doc.text('Contact: ' + formData.contact, 10, 20);
+    // doc.text('Email: ' + formData.email, 10, 30);
+    // doc.text('Country: ' + formData.country, 10, 40);
+    // doc.text('Industry: ' + formData.industry, 10, 50);
+    // doc.text('Company: ' + formData.companyName, 10, 60);
 
-    const pdfBlob = doc.output('blob');
+    // const pdfBlob = doc.output('blob');
+    // const pdfBase64 = await blobToBase64(pdfBlob);
+
+    const element = document.getElementById("content");
+    const options = {
+      margin: [1, 0, 1, 0], // 1 inch margin
+      html2canvas: { scale: 2 }, // Higher scale for better quality
+      jsPDF: {
+        unit: 'in',
+        format: 'letter',
+        orientation: 'portrait'
+      }
+    };
+
+    // Generate PDF as a Blob
+    const pdfBlob = await html2pdf()
+      .from(element)
+      .set(options)
+      .output('blob');
+
+    // Convert Blob to Base64
     const pdfBase64 = await blobToBase64(pdfBlob);
 
     const emailInput = 'gdgd60358@gmail.com';
@@ -217,10 +240,6 @@ function App() {
         console.error('There was a problem with the fetch operation:', error);
         alert('Failed to send email.'); // Notify user
       });
-
-    // setSubmitted(true);
-
-
   };
 
   function blobToBase64(blob) {
@@ -230,6 +249,10 @@ function App() {
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
+  }
+
+  const handleViewSummary = ()=>{
+    setCurrentTab(6);
   }
 
   const handleDownload = () => {
@@ -309,10 +332,11 @@ function App() {
               </Button>
               )}
               {renderTabContent()}
-              {validationErrors[currentTab] && <div className="error-message">{validationErrors[currentTab]}</div>}
+              {/* {validationErrors[currentTab] && <div className="error-message">{validationErrors[currentTab]}</div>}
+              */}
               <Grid container spacing={2}>
                 <Grid item xs={6} container justifyContent="flex-start">
-                  {currentTab > 0 && (
+                  {currentTab > 0 && (currentTab < totalTabs - 1) && (
                     <Button
                       variant="contained"
                       color="secondary"
@@ -335,7 +359,7 @@ function App() {
                     Save and Continue <i className="fa fa-angle-double-right"></i>
                   </Button>
                   )}
-                  {currentTab == totalTabs - 2 && (<Button
+                  {currentTab === 4 && (<Button
                     variant="contained"
                     color="secondary"
                     onClick={handleSubmit}

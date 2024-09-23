@@ -14,7 +14,7 @@ import countryCodeLookup from "country-code-lookup";
 import { getCountryCallingCode } from "libphonenumber-js";
 import { countryList } from '../Components/CountryList'; 
 
-const TabZero = ({ formData, onFormDataChange }) => {
+const TabZero = ({ setMainError, formData, onFormDataChange }) => {
   const Spacer = ({ size }) => (
     <div style={{ height: size, width: "100%" }}></div>
   );
@@ -88,8 +88,10 @@ const TabZero = ({ formData, onFormDataChange }) => {
     if (!emailPattern.test(value)) {
       // Simple regex for email validation
       setError("Invalid corporate email format");
+      setMainError("Invalid corporate email format");
     } else {
       setError(null); // Clear error if valid
+      setMainError(null);
     }
   };
 

@@ -79,7 +79,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
             </label>
             <Box mt={2}>
               <Typography variant="body1">Selected Files:</Typography>
-              <ul>
+              <ol>
                 {images.map((file, index) => (
                   <li key={index}>
                     {file.name}
@@ -101,7 +101,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
                     </IconButton>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </Box>
           </Box>
         </CardContent>
@@ -129,7 +129,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
             </label>
             <Box mt={2}>
               <Typography variant="body1">Selected Files:</Typography>
-              <ul>
+              <ol>
                 {floorPlan.map((file, index) => (
                   <li key={index}>
                     {file.name}
@@ -151,7 +151,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
                     </IconButton>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </Box>
           </Box>
         </CardContent>

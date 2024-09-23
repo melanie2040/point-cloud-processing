@@ -178,46 +178,49 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    // const doc = new jsPDF();
 
-    // doc.setFontSize(16);
-    // doc.text('Full name: ' + formData.firstName + ' ' + formData.lastName, 10, 10);
-    // doc.text('Contact: ' + formData.contact, 10, 20);
-    // doc.text('Email: ' + formData.email, 10, 30);
-    // doc.text('Country: ' + formData.country, 10, 40);
-    // doc.text('Industry: ' + formData.industry, 10, 50);
-    // doc.text('Company: ' + formData.companyName, 10, 60);
+    setCurrentTab(5);
 
-    // const pdfBlob = doc.output('blob');
-    // const pdfBase64 = await blobToBase64(pdfBlob);
+    const doc = new jsPDF();
 
-    // const emailInput = 'gdgd60358@gmail.com';
+    doc.setFontSize(16);
+    doc.text('Full name: ' + formData.firstName + ' ' + formData.lastName, 10, 10);
+    doc.text('Contact: ' + formData.contact, 10, 20);
+    doc.text('Email: ' + formData.email, 10, 30);
+    doc.text('Country: ' + formData.country, 10, 40);
+    doc.text('Industry: ' + formData.industry, 10, 50);
+    doc.text('Company: ' + formData.companyName, 10, 60);
 
-    // doc.save(`${formData.companyName}-quote-calculator.pdf`);
+    const pdfBlob = doc.output('blob');
+    const pdfBase64 = await blobToBase64(pdfBlob);
 
-    // await fetch('http://localhost:5000/send-email', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     email: emailInput, // Ensure emailInput is defined in your scope
-    //     pdf: pdfBase64,
-    //   }),
-    // })
-    //   .then(response => response.text())
-    //   .then(data => {
-    //     console.log(data); // Handle success
-    //     alert('Email sent successfully!'); // Notify user
-    //   })
-    //   .catch(error => {
-    //     console.error('There was a problem with the fetch operation:', error);
-    //     alert('Failed to send email.'); // Notify user
-    //   });
+    const emailInput = 'gdgd60358@gmail.com';
+
+    //doc.save(`${formData.companyName}-quote-calculator.pdf`);
+
+    await fetch('http://localhost:5000/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: emailInput, // Ensure emailInput is defined in your scope
+        pdf: pdfBase64,
+      }),
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data); // Handle success
+        alert('Email sent successfully!'); // Notify user
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        alert('Failed to send email.'); // Notify user
+      });
 
     // setSubmitted(true);
 
-    setCurrentTab(5);
+
   };
 
   function blobToBase64(blob) {

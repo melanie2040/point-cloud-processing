@@ -84,7 +84,8 @@ const TabZero = ({ formData, onFormDataChange }) => {
   const handleEmailChange = (e) => {
     const { value } = e.target;
     onFormDataChange("email", value);
-    if (!/@.*\.com$/.test(value)) {
+    const emailPattern = /^.+@.+\.[a-zA-Z]{2,63}$/;
+    if (!emailPattern.test(value)) {
       // Simple regex for email validation
       setError("Invalid corporate email format");
     } else {

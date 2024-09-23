@@ -146,7 +146,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
       <Card variant="outlined" sx={{ marginBottom: 2 }}>
         <CardContent>
           <Grid container spacing={2}>
-            <Grid item xs={6} container alignItems="center">
+            <Grid item xs={12} sm={12} lg={6} container alignItems="center">
               <Typography variant="h6" align="left">
                 Country
               </Typography>
@@ -169,7 +169,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={12} lg={6}>
               <Typography variant="h6" align="left">
                 State
               </Typography>
@@ -185,7 +185,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid item xs={6} container alignItems="center">
+            <Grid item xs={12} sm={12} lg={6} container alignItems="center">
               <Typography variant="h6" align="left">
                 City
               </Typography>
@@ -199,7 +199,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
                 margin="normal"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={12} lg={6}>
               <Typography variant="h6" align="left">
                 Postal Code
               </Typography>
@@ -218,7 +218,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            <Grid item xs={6} container alignItems="center">
+            <Grid item xs={12} sm={12} lg={6} container alignItems="center">
               <Typography variant="h6" align="left">
                 Street Address
               </Typography>
@@ -232,7 +232,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
                 margin="normal"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={12} lg={6}>
               <Typography variant="h6" align="left">
                 Unit Number
               </Typography>

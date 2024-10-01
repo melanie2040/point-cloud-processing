@@ -24,6 +24,8 @@ import {
   Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 function App() {
   const navigate = useNavigate();
@@ -34,6 +36,33 @@ function App() {
   const [error, setError] = useState(null);
 
   const [currentStep, setCurrentStep] = useState(0);
+
+  const location = useLocation(); // Get the current location
+  useEffect(() => {
+    // Update currentTab based on the current URL
+    switch (location.pathname) {
+      case "/":
+        setCurrentStep(0);
+        break;
+      case "/tab1":
+        setCurrentStep(1);
+        break;
+      case "/tab2":
+        setCurrentStep(2);
+        break;
+      case "/tab3":
+        setCurrentStep(3);
+        break;
+      case "/tab4":
+        setCurrentStep(4);
+        break;
+      case "/tab5":
+        setCurrentStep(5);
+        break;
+      default:
+        setCurrentStep(0); // Default case
+    }
+  }, [location.pathname]);
 
   const steps = [
     { icon: "fa-info-circle", title: "Basics" },
@@ -69,6 +98,8 @@ function App() {
         navigate("/");
     }
   };
+
+  
 
   const [formData, setFormData] = useState({
     firstName: "",

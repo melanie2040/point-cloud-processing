@@ -18,6 +18,7 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { countryList } from "../Components/CountryList";
+import { useNavigate } from 'react-router-dom'; 
 
 // const Map = ({ postalCode })=>{
 //     useEffect(()=>{
@@ -38,6 +39,16 @@ const TabTwo = ({ formData, onFormDataChange }) => {
   const Spacer = ({ size }) => (
     <div style={{ height: size, width: "100%" }}></div>
   );
+
+  const navigate = useNavigate();
+
+  const handlePrev = () => {
+    navigate('/tab1');  // Navigate to Tab 1 when the button is clicked
+  };
+
+  const handleNext = () => {
+    navigate('/tab3');  // Navigate to Tab 1 when the button is clicked
+  };
 
   const handleNeedsChange = (e) => {
     const { value } = e.target;
@@ -313,6 +324,30 @@ const TabTwo = ({ formData, onFormDataChange }) => {
           </FormControl>
         </CardContent>
       </Card>
+      <Spacer size="50px" />
+
+      <Grid container spacing={2}>
+        <Grid item xs={6} container justifyContent="flex-start">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handlePrev}
+            sx={{ width: "100px" }}
+          >
+            <i className="fa fa-angle-double-left"></i> Back
+          </Button>
+        </Grid>
+        <Grid item xs={6} container justifyContent="flex-end">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleNext}
+            sx={{ width: "200px" }}
+          >
+            Save and Continue <i className="fa fa-angle-double-right"></i>
+          </Button>
+        </Grid>
+      </Grid>
       <Spacer size="50px" />
     </Container>
   );

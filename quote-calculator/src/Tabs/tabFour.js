@@ -10,13 +10,25 @@ import {
   Card,
   CardContent,
   IconButton,
+  Grid,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate } from 'react-router-dom'; 
 
 const TabFour = ({ formData, onFormDataChange }) => {
   const [date, setDate] = useState("");
   const [images, setImages] = useState([]);
   const [floorPlan, setFloorPlan] = useState([]);
+
+  const navigate = useNavigate();
+
+  const handlePrev = () => {
+    navigate('/tab3');  // Navigate to Tab 1 when the button is clicked
+  };
+
+  const handleNext = () => {
+    navigate('/tab5');  // Navigate to Tab 1 when the button is clicked
+  };
 
   const handleCalendarChange = (newDate) => {
     setDate(newDate);
@@ -177,6 +189,30 @@ const TabFour = ({ formData, onFormDataChange }) => {
           <Typography variant="h6">Selected Date: {formattedDate}</Typography>
         </CardContent>
       </Card>
+      <Spacer size="50px" />
+
+      <Grid container spacing={2}>
+        <Grid item xs={6} container justifyContent="flex-start">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handlePrev}
+            sx={{ width: "100px" }}
+          >
+            <i className="fa fa-angle-double-left"></i> Back
+          </Button>
+        </Grid>
+        <Grid item xs={6} container justifyContent="flex-end">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleNext}
+            sx={{ width: "200px" }}
+          >
+            Save and Continue <i className="fa fa-angle-double-right"></i>
+          </Button>
+        </Grid>
+      </Grid>
       <Spacer size="50px" />
     </Container>
   );

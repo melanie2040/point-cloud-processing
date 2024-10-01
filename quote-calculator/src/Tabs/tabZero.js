@@ -12,13 +12,18 @@ import {
 } from "@mui/material";
 import countryCodeLookup from "country-code-lookup";
 import { getCountryCallingCode } from "libphonenumber-js";
-import { countryList } from '../Components/CountryList'; 
+import { countryList } from "../Components/CountryList";
+import { useNavigate } from "react-router-dom";
 
-const TabZero = ({ setMainError, formData, onFormDataChange }) => {
+const TabZero = ({ formData, onFormDataChange }) => {
+  const navigate = useNavigate();
   const Spacer = ({ size }) => (
     <div style={{ height: size, width: "100%" }}></div>
   );
 
+  const handleNext = () => {
+    navigate("/tab1"); // Navigate to Tab 1 when the button is clicked
+  };
 
   const industries = [
     "Aerospace & Defence",
@@ -88,10 +93,8 @@ const TabZero = ({ setMainError, formData, onFormDataChange }) => {
     if (!emailPattern.test(value)) {
       // Simple regex for email validation
       setError("Invalid corporate email format");
-      setMainError("Invalid corporate email format");
     } else {
       setError(null); // Clear error if valid
-      setMainError(null);
     }
   };
 
@@ -101,7 +104,7 @@ const TabZero = ({ setMainError, formData, onFormDataChange }) => {
     if (result) {
       const code = getCountryCallingCode(result.iso2.toUpperCase());
       return code;
-       // This will give you the calling code
+      // This will give you the calling code
     } else {
       return null; // Handle the case where the country is not found
     }
@@ -109,7 +112,7 @@ const TabZero = ({ setMainError, formData, onFormDataChange }) => {
 
   const handleSelectCountry = (event, country) => {
     //setInputValue(country);
-    setSelectedCountry(country)
+    setSelectedCountry(country);
     onFormDataChange("country", country);
 
     const cc = getCountryCode(country);
@@ -190,7 +193,7 @@ const TabZero = ({ setMainError, formData, onFormDataChange }) => {
           fullWidth
           id="country"
           options={filteredCountries}
-          value={formData.country|| selectedCountry}
+          value={formData.country || selectedCountry}
           inputValue={inputValue}
           onInputChange={handleInputChange}
           onChange={handleSelectCountry}
@@ -203,7 +206,6 @@ const TabZero = ({ setMainError, formData, onFormDataChange }) => {
             />
           )}
         />
-
       </Grid>
 
       <Spacer size="30px" />
@@ -281,6 +283,19 @@ const TabZero = ({ setMainError, formData, onFormDataChange }) => {
         </Box>
       </Box>
 
+      <Spacer size="50px" />
+      <Grid container justifyContent="flex-end">
+        <Grid item xs={6}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleNext}
+            sx={{ width: "200px" }}
+          >
+            Save and Continue <i className="fa fa-angle-double-right"></i>
+          </Button>
+        </Grid>
+      </Grid>
       <Spacer size="50px" />
     </Container>
   );

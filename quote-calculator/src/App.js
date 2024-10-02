@@ -74,32 +74,92 @@ function App() {
   ];
 
   const handleStepClick = (index) => {
-    setCurrentStep(index);
-    switch (index) {
-      case 0:
-        navigate("/");
-        break;
-      case 1:
-        navigate("/tab1");
-        break;
-      case 2:
-        navigate("/tab2");
-        break;
-      case 3:
-        navigate("/tab3");
-        break;
-      case 4:
-        navigate("/tab4");
-        break;
-      case 5:
-        navigate("/tab5");
-        break;
-      default:
-        navigate("/");
+    if (index > currentStep) {
+      const response = verifyTab(currentStep);
+      if (response == true) {
+        setCurrentStep(index);
+        switch (index) {
+          case 0:
+            navigate("/");
+            break;
+          case 1:
+            navigate("/tab1");
+            break;
+          case 2:
+            navigate("/tab2");
+            break;
+          case 3:
+            navigate("/tab3");
+            break;
+          case 4:
+            navigate("/tab4");
+            break;
+          case 5:
+            navigate("/tab5");
+            break;
+          default:
+            navigate("/");
+        }
+
+      }
+    }else{
+      setCurrentStep(index);
+        switch (index) {
+          case 0:
+            navigate("/");
+            break;
+          case 1:
+            navigate("/tab1");
+            break;
+          case 2:
+            navigate("/tab2");
+            break;
+          case 3:
+            navigate("/tab3");
+            break;
+          case 4:
+            navigate("/tab4");
+            break;
+          case 5:
+            navigate("/tab5");
+            break;
+          default:
+            navigate("/");
+        }
+
     }
+
   };
 
-  
+  const verifyTab = (index) => {
+    switch (index) {
+      case 0:
+        if (!formData.firstName || !formData.lastName || !formData.country) {
+          return false;
+        } else {
+          return true;
+        }
+      case 1:
+        if (!formData.qn1 || !formData.qn2 || !formData.qn3) {
+          return false;
+        } else {
+          return true;
+        }
+      case 2:
+        return false;
+      case 3:
+        return false;
+      case 4:
+        return false;
+      case 5:
+        return false;
+      default:
+        return false;
+    }
+
+  }
+
+
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -240,7 +300,7 @@ function App() {
   }
 
   const handleViewSummary = () => {
-   // setCurrentTab(6);
+    // setCurrentTab(6);
   };
 
   const handleDownload = () => {
@@ -267,96 +327,95 @@ function App() {
   return (
     <div className="App" id="content">
 
-        <AppBar position="static" sx={{ backgroundColor: "grey.500" }}>
-          <Toolbar>
-            <img src={dcon} width="30" height="30" alt="Logo" />
-            <Typography
-              variant="h6"
-              style={{ marginLeft: "16px", fontWeight: "bold" }}
-            >
-              Point Cloud and Image Processing Quote Calculator
-            </Typography>
-          </Toolbar>
-          <div
-            className="steps-container d-flex justify-content-center"
-            style={{ marginBottom: "16px" }}
+      <AppBar position="static" sx={{ backgroundColor: "grey.500" }}>
+        <Toolbar>
+          <img src={dcon} width="30" height="30" alt="Logo" />
+          <Typography
+            variant="h6"
+            style={{ marginLeft: "16px", fontWeight: "bold" }}
           >
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className={`d-flex align-items-center step ${
-                  index === currentStep ? "active" : ""
+            Point Cloud and Image Processing Quote Calculator
+          </Typography>
+        </Toolbar>
+        <div
+          className="steps-container d-flex justify-content-center"
+          style={{ marginBottom: "16px" }}
+        >
+          {steps.map((step, index) => (
+            <div
+              key={index}
+              className={`d-flex align-items-center step ${index === currentStep ? "active" : ""
                 }`}
-                onClick={() => handleStepClick(index)}
-                style={{ cursor: "pointer", marginRight: "20px" }}
-              >
-                <span className="step-icon">
-                  <i className={`fa ${step.icon}`}></i>
-                </span>
-                {index === currentStep && (
-                  <span style={{ marginLeft: "10px" }}>{step.title}</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </AppBar>
+              onClick={() => handleStepClick(index)}
+              style={{ cursor: "pointer", marginRight: "20px" }}
+            >
+              <span className="step-icon">
+                <i className={`fa ${step.icon}`}></i>
+              </span>
+              {index === currentStep && (
+                <span style={{ marginLeft: "10px" }}>{step.title}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      </AppBar>
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <TabZero
-                formData={formData}
-                onFormDataChange={handleFormDataChange}
-              />
-            }
-          />
-          <Route
-            path="/tab1"
-            element={
-              <TabOne
-                formData={formData}
-                onFormDataChange={handleFormDataChange}
-              />
-            }
-          />
-          <Route
-            path="/tab2"
-            element={
-              <TabTwo
-                formData={formData}
-                onFormDataChange={handleFormDataChange}
-              />
-            }
-          />
-          <Route
-            path="/tab3"
-            element={
-              <TabThree
-                formData={formData}
-                onFormDataChange={handleFormDataChange}
-              />
-            }
-          />
-          <Route
-            path="/tab4"
-            element={
-              <TabFour
-                formData={formData}
-                onFormDataChange={handleFormDataChange}
-              />
-            }
-          />
-          <Route
-            path="/tab5"
-            element={
-              <TabFive
-                formData={formData}
-                onFormDataChange={handleFormDataChange}
-              />
-            }
-          />
-        </Routes>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <TabZero
+              formData={formData}
+              onFormDataChange={handleFormDataChange}
+            />
+          }
+        />
+        <Route
+          path="/tab1"
+          element={
+            <TabOne
+              formData={formData}
+              onFormDataChange={handleFormDataChange}
+            />
+          }
+        />
+        <Route
+          path="/tab2"
+          element={
+            <TabTwo
+              formData={formData}
+              onFormDataChange={handleFormDataChange}
+            />
+          }
+        />
+        <Route
+          path="/tab3"
+          element={
+            <TabThree
+              formData={formData}
+              onFormDataChange={handleFormDataChange}
+            />
+          }
+        />
+        <Route
+          path="/tab4"
+          element={
+            <TabFour
+              formData={formData}
+              onFormDataChange={handleFormDataChange}
+            />
+          }
+        />
+        <Route
+          path="/tab5"
+          element={
+            <TabFive
+              formData={formData}
+              onFormDataChange={handleFormDataChange}
+            />
+          }
+        />
+      </Routes>
 
     </div>
   );

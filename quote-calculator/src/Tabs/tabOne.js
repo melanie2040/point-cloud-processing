@@ -21,11 +21,15 @@ const TabOne = ({ formData, onFormDataChange }) => {
   const navigate = useNavigate();
 
   const handlePrev = () => {
-    navigate('/');  // Navigate to Tab 1 when the button is clicked
+    navigate('/');  
   };
 
   const handleNext = () => {
-    navigate('/tab2');  // Navigate to Tab 1 when the button is clicked
+    if(formData.qn1 && formData.qn2 && formData.qn3){
+      navigate('/tab2'); 
+    }
+
+    
   };
 
   const handleQuestion1Change = (e) => {

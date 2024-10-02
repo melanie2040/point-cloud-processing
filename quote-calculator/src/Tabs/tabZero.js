@@ -21,9 +21,19 @@ const TabZero = ({ formData, onFormDataChange }) => {
     <div style={{ height: size, width: "100%" }}></div>
   );
 
+  const [firstNameError, setFirstNameError] = useState('');
+
   const handleNext = () => {
-    navigate("/tab1"); // Navigate to Tab 1 when the button is clicked
+    if(formData.firstName && formData.lastName && formData.email && formData.contact && formData.industry && formData.country && formData.companyName){
+      navigate("/tab1");
+    }
+    
+    if (!formData.firstName){
+      setFirstNameError('Please fill in first name');
+    }
+
   };
+  
 
   const industries = [
     "Aerospace & Defence",
@@ -146,6 +156,7 @@ const TabZero = ({ formData, onFormDataChange }) => {
             require
             margin="normal"
           />
+          {firstNameError}
         </Box>
         <Box flex={1} mr={2} minWidth="250px">
           <Typography variant="h6" align="left">

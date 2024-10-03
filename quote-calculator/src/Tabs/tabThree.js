@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Container, Grid, TextField, Typography, Box, Button } from "@mui/material";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const TabThree = ({ formData, onFormDataChange }) => {
-  const [error, setError] = useState(null);
   const [widthError, setWidthError] = useState(null);
   const [lengthError, setLengthError] = useState(null);
   const [heightError, setHeightError] = useState(null);
+
+  const [volumeError, setVolumeError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -15,8 +16,40 @@ const TabThree = ({ formData, onFormDataChange }) => {
   };
 
   const handleNext = () => {
-    navigate('/tab4');  // Navigate to Tab 1 when the button is clicked
+    if (!formData.width) {
+      setWidthError("Please fill in this field");
+    }
+
+    if (!formData.length) {
+      setLengthError("Please fill in this field");
+    }
+
+    if (!formData.height) {
+      setHeightError("Please fill in this field");
+    }
+
+    if (formData.width && formData.length && formData.height && !widthError && !heightError && !lengthError) {
+      const volume = formData.width * formData.length * formData.height;
+      if(volume < 1){
+        alert("Invalid scanning volume");
+      }else{
+        onFormDataChange("volume", volume);
+        navigate("/tab4");
+      }
+    }
   };
+
+  const calculateVolume = ()=>{
+    if (formData.width && formData.length && formData.height) {
+      if (formData.width * formData.length * formData.height < 1) {
+        setVolumeError("Total volume has to be >= 1 cubic metres");
+      } else {
+        setVolumeError(null);
+      }
+    }else{
+      setVolumeError("Missing");
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,13 +74,7 @@ const TabThree = ({ formData, onFormDataChange }) => {
         setHeightError(null);
       }
     }
-    // if(formData.width && formData.length && formData.height){
-    //     if(formData.width * formData.length * formData.height <1){
-    //         setError("Total volume has to be >= 1 cubic metres");
-    //     }else{
-    //         setError(null);
-    //     }
-    // }
+
 
     //calculateVolume();
   };
@@ -90,7 +117,9 @@ const TabThree = ({ formData, onFormDataChange }) => {
             helperText={widthError}
             margin="normal"
           />
+          <span style={{ color: 'red' }}>{widthError}</span>
         </Box>
+
         <Box flex={1} mr={2} minWidth="250px">
           <Typography variant="h6" align="left">
             Length (metres)
@@ -110,7 +139,9 @@ const TabThree = ({ formData, onFormDataChange }) => {
             helperText={lengthError}
             margin="normal"
           />
+          <span style={{ color: 'red' }}>{lengthError}</span>
         </Box>
+
         <Box flex={1} mr={2} minWidth="250px">
           <Typography variant="h6" align="left">
             Height (metres)
@@ -130,17 +161,20 @@ const TabThree = ({ formData, onFormDataChange }) => {
             helperText={heightError}
             margin="normal"
           />
+          <span style={{ color: 'red' }}>{heightError}</span>
         </Box>
+
       </Box>
 
       <Spacer size="50px" />
+      <span style={{ color: 'red' }}>{volumeError}</span>
       <Grid container spacing={2}>
         <Grid item xs={6} container justifyContent="flex-start">
           <Button
             variant="contained"
             color="secondary"
             onClick={handlePrev}
-            sx={{ width: "100px" }}
+            sx={{ backgroundColor: '#555555', width: "100px" }}
           >
             <i className="fa fa-angle-double-left"></i> Back
           </Button>
@@ -150,7 +184,7 @@ const TabThree = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handleNext}
-            sx={{ width: "200px" }}
+            sx={{ backgroundColor: '#555555', width: "200px" }}
           >
             Save and Continue <i className="fa fa-angle-double-right"></i>
           </Button>

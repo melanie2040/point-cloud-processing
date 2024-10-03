@@ -20,19 +20,34 @@ const TabFour = ({ formData, onFormDataChange }) => {
   const [images, setImages] = useState([]);
   const [floorPlan, setFloorPlan] = useState([]);
 
+  const [imagesError, setImagesError] = useState(null);
+  const [dateError, setDateError] = useState(null);
+
   const navigate = useNavigate();
 
   const handlePrev = () => {
-    navigate('/tab3');  // Navigate to Tab 1 when the button is clicked
+    navigate('/tab3');
   };
 
   const handleNext = () => {
-    navigate('/tab5');  // Navigate to Tab 1 when the button is clicked
+
+    if(!formData.calendar){
+      setDateError("Please choose a date");
+    }
+
+    if(formData.calendar && !dateError){
+      navigate('/tab5'); 
+    }
+
   };
 
   const handleCalendarChange = (newDate) => {
     setDate(newDate);
     onFormDataChange("calendar", newDate);
+
+    if(newDate){
+      setDateError(null);
+    }
   };
 
   const tileDisabled = ({ date }) => {
@@ -188,6 +203,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
           </Box>
           <Typography variant="h6">Selected Date: {formattedDate}</Typography>
         </CardContent>
+        <span style={{ color: 'red' }}>{dateError}</span>
       </Card>
       <Spacer size="50px" />
 
@@ -197,7 +213,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handlePrev}
-            sx={{ width: "100px" }}
+            sx={{ backgroundColor: '#555555',width: "100px" }}
           >
             <i className="fa fa-angle-double-left"></i> Back
           </Button>
@@ -205,11 +221,11 @@ const TabFour = ({ formData, onFormDataChange }) => {
         <Grid item xs={6} container justifyContent="flex-end">
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             onClick={handleNext}
             sx={{ width: "200px" }}
           >
-            Save and Continue <i className="fa fa-angle-double-right"></i>
+            Submit <i className="fa fa-angle-double-right"></i>
           </Button>
         </Grid>
       </Grid>

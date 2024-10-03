@@ -18,6 +18,10 @@ const TabOne = ({ formData, onFormDataChange }) => {
     <div style={{ height: size, width: "100%" }}></div>
   );
 
+  const [qn1Error, setQn1Error] = useState('');
+  const [qn2Error, setQn2Error] = useState('');
+  const [qn3Error, setQn3Error] = useState('');
+
   const navigate = useNavigate();
 
   const handlePrev = () => {
@@ -25,9 +29,25 @@ const TabOne = ({ formData, onFormDataChange }) => {
   };
 
   const handleNext = () => {
-    if(formData.qn1 && formData.qn2 && formData.qn3){
+
+    if(!formData.qn1){
+      setQn1Error('Please fill in this field.')
+    }
+
+    if(!formData.qn2){
+      setQn2Error('Please fill in this field.')
+    }
+
+    if(!formData.qn3){
+      setQn3Error('Please fill in this field.')
+    }
+
+    if(formData.qn1 && formData.qn2 && formData.qn3
+      && !qn1Error && !qn2Error && !qn3Error
+    ){
       navigate('/tab2'); 
     }
+
 
     
   };
@@ -35,14 +55,24 @@ const TabOne = ({ formData, onFormDataChange }) => {
   const handleQuestion1Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn1", value);
+    if(value){
+      setQn1Error(null);
+    }
+
   };
   const handleQuestion2Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn2", value);
+    if(value){
+      setQn2Error(null);
+    }
   };
   const handleQuestion3Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn3", value);
+    if(value){
+      setQn3Error(null);
+    }
   };
 
   return (
@@ -69,7 +99,9 @@ const TabOne = ({ formData, onFormDataChange }) => {
               />
             </RadioGroup>
           </FormControl>
+
         </CardContent>
+        <span style={{ color: 'red' }}>{qn1Error}</span>
       </Card>
 
       <Spacer size="30px" />
@@ -92,6 +124,7 @@ const TabOne = ({ formData, onFormDataChange }) => {
             </RadioGroup>
           </FormControl>
         </CardContent>
+        <span style={{ color: 'red' }}>{qn2Error}</span>
       </Card>
 
       <Spacer size="30px" />
@@ -113,6 +146,7 @@ const TabOne = ({ formData, onFormDataChange }) => {
             </RadioGroup>
           </FormControl>
         </CardContent>
+        <span style={{ color: 'red' }}>{qn3Error}</span>
       </Card>
 
       <Spacer size="50px" />
@@ -123,7 +157,7 @@ const TabOne = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handlePrev}
-            sx={{ width: "100px" }}
+            sx={{ backgroundColor: '#555555',width: "100px" }}
           >
             <i className="fa fa-angle-double-left"></i> Back
           </Button>
@@ -133,7 +167,7 @@ const TabOne = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handleNext}
-            sx={{ width: "200px" }}
+            sx={{ backgroundColor: '#555555',width: "200px" }}
           >
             Save and Continue <i className="fa fa-angle-double-right"></i>
           </Button>

@@ -332,7 +332,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handlePrev}
-            sx={{ width: "100px" }}
+            sx={{ backgroundColor: '#555555',width: "100px" }}
           >
             <i className="fa fa-angle-double-left"></i> Back
           </Button>
@@ -342,7 +342,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handleNext}
-            sx={{ width: "200px" }}
+            sx={{ backgroundColor: '#555555',width: "200px" }}
           >
             Save and Continue <i className="fa fa-angle-double-right"></i>
           </Button>

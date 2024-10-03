@@ -30,11 +30,6 @@ import { useLocation } from 'react-router-dom';
 function App() {
   const navigate = useNavigate();
 
-  const totalTabs = 6;
-  const [validationErrors, setValidationErrors] = useState({});
-
-  const [error, setError] = useState(null);
-
   const [currentStep, setCurrentStep] = useState(0);
 
   const location = useLocation(); // Get the current location

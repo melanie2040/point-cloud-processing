@@ -16,7 +16,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
   const navigate = useNavigate();
 
   const handlePrev = () => {
-    navigate("/tab4"); // Navigate to Tab 1 when the button is clicked
+    navigate("/"); // Navigate to Tab 1 when the button is clicked
   };
 
   const Spacer = ({ size }) => (
@@ -229,6 +229,42 @@ const TabFive = ({ formData, onFormDataChange }) => {
         </CardContent>
       </Card>
 
+      <Spacer size="30px" />
+      <Card variant="outlined" sx={{ marginBottom: 2 }}>
+        <CardContent>
+          {formData.photos.length > 0 ? (
+            formData.photos.map((photo, index) => (
+              <img
+                key={index}
+                src={URL.createObjectURL(photo)} // Create a temporary URL for the image
+                alt={`Uploaded ${index + 1}`} // Alt text for accessibility
+                style={{ width: '50%', height: 'auto', marginBottom: '10px' }} // Style as needed
+              />
+            ))
+          ) : (
+            <p>No images uploaded.</p> // Fallback message when there are no images
+          )}
+        </CardContent>
+      </Card>
+
+      <Spacer size="30px" />
+      <Card variant="outlined" sx={{ marginBottom: 2 }}>
+        <CardContent>
+          {formData.floorPlan.length > 0 ? (
+            formData.floorPlan.map((plan, index) => (
+              <img
+                key={index}
+                src={URL.createObjectURL(plan)} // Create a temporary URL for the image
+                alt={`Uploaded ${index + 1}`} // Alt text for accessibility
+                style={{ width: '50%', height: 'auto', marginBottom: '10px' }} // Style as needed
+              />
+            ))
+          ) : (
+            <p>No floor plan uploaded.</p> // Fallback message when there are no images
+          )}
+        </CardContent>
+      </Card>
+
       <Spacer size="50px" />
 
       <Grid container spacing={2}>
@@ -237,9 +273,9 @@ const TabFive = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handlePrev}
-            sx={{ width: "100px" }}
+            sx={{ backgroundColor: '#555555', width: "200px" }}
           >
-            <i className="fa fa-angle-double-left"></i> Back
+            <i className="fa fa-angle-double-left"></i> Back to Form
           </Button>
         </Grid>
       </Grid>

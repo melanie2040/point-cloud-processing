@@ -17,8 +17,8 @@ import { useNavigate } from 'react-router-dom';
 
 const TabFour = ({ formData, onFormDataChange }) => {
   const [date, setDate] = useState("");
-  const [images, setImages] = useState([]);
-  const [floorPlan, setFloorPlan] = useState([]);
+  const [images, setImages] = useState(formData.photos);
+  const [floorPlan, setFloorPlan] = useState(formData.floorPlan);
 
   const [imagesError, setImagesError] = useState(null);
   const [dateError, setDateError] = useState(null);
@@ -57,22 +57,52 @@ const TabFour = ({ formData, onFormDataChange }) => {
 
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
-    setImages((prevImages) => [...prevImages, ...newFiles]);
+    const update = [...(formData.photos || []), ...newFiles];
+    //const updatedImages = [...(formData.images || []), ...newFiles];
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages, ...newFiles];
+  
+      // Now update formData with the new images array
+      onFormDataChange("photos", update);
+  
+      return updatedImages; // Return the updated images array for local state
+    });
   };
 
   const handleFloorPlanChange = (event) => {
     const newFiles = Array.from(event.target.files);
-    setFloorPlan((prevFloorPlans) => [...prevFloorPlans, ...newFiles]);
+
+    setFloorPlan((prevFloorPlans) => {
+      const updatedFloorPlans = [...prevFloorPlans, ...newFiles];
+
+  
+      // Now update formData with the new images array
+      onFormDataChange("floorPlan", updatedFloorPlans);
+  
+      return updatedFloorPlans; // Return the updated images array for local state
+    });
   };
 
   const handleRemoveImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setImages((prevImages) => {
+      const updatedImages = prevImages.filter((_, i) => i !== index);
+  
+      // Update formData with the new images array
+      onFormDataChange("photos", updatedImages);
+  
+      return updatedImages; // Return the updated images array for local state
+    });
   };
 
   const handleRemoveFloorPlan = (index) => {
-    setFloorPlan((prevFloorPlan) =>
-      prevFloorPlan.filter((_, i) => i !== index)
-    );
+    setFloorPlan((prevFloorPlan) => {
+      const updatedFloorPlans = prevFloorPlan.filter((_, i) => i !== index);
+  
+      // Update formData with the new images array
+      onFormDataChange("floorPlan", updatedFloorPlans);
+  
+      return updatedFloorPlans; // Return the updated images array for local state
+    });
   };
 
   const Spacer = ({ size }) => (

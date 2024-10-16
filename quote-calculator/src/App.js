@@ -21,16 +21,23 @@ import {
   CardContent,
   Container,
   Grid,
-  Box,
+  Box, IconButton
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu'
 
 function App() {
   const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState(0);
+
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed((prev) => !prev);
+  }
 
   const location = useLocation(); // Get the current location
   useEffect(() => {
@@ -97,30 +104,30 @@ function App() {
         }
 
       }
-    }else{
+    } else {
       setCurrentStep(index);
-        switch (index) {
-          case 0:
-            navigate("/");
-            break;
-          case 1:
-            navigate("/tab1");
-            break;
-          case 2:
-            navigate("/tab2");
-            break;
-          case 3:
-            navigate("/tab3");
-            break;
-          case 4:
-            navigate("/tab4");
-            break;
-          case 5:
-            navigate("/tab5");
-            break;
-          default:
-            navigate("/");
-        }
+      switch (index) {
+        case 0:
+          navigate("/");
+          break;
+        case 1:
+          navigate("/tab1");
+          break;
+        case 2:
+          navigate("/tab2");
+          break;
+        case 3:
+          navigate("/tab3");
+          break;
+        case 4:
+          navigate("/tab4");
+          break;
+        case 5:
+          navigate("/tab5");
+          break;
+        default:
+          navigate("/");
+      }
 
     }
 
@@ -332,86 +339,104 @@ function App() {
             Point Cloud and Image Processing Quote Calculator
           </Typography>
         </Toolbar>
-        <div
-          className="steps-container d-flex justify-content-center"
-          style={{ marginBottom: "16px" }}
-        >
+      </AppBar>
+      <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh' }}>
+        {(location.pathname !== '/tab5') && <Box sx={{
+          width: isCollapsed ? '80px' : '180px',
+          backgroundColor: 'grey.300',
+          padding: '8px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          height: '100vh',
+        }}>
+          <IconButton onClick={toggleSidebar} sx={{ marginBottom: '16px', alignSelf: 'flex-start' }}>
+            <MenuIcon />
+          </IconButton>
           {steps.map((step, index) => (
             <div
               key={index}
-              className={`d-flex align-items-center step ${index === currentStep ? "active" : ""
+              className={`d-flex align-items-left step ${index === currentStep ? "active" : ""
                 }`}
               onClick={() => handleStepClick(index)}
-              style={{ cursor: "pointer", marginRight: "20px" }}
+              style={{
+                cursor: "pointer",
+                marginBottom: "10px",
+                padding: '8px',
+                display: 'flex',
+                alignItems: 'left',
+              }}
             >
               <span className="step-icon">
                 <i className={`fa ${step.icon}`}></i>
               </span>
-              {index === currentStep && (
+              {!isCollapsed && (
                 <span style={{ marginLeft: "10px" }}>{step.title}</span>
               )}
             </div>
           ))}
-        </div>
-      </AppBar>
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <TabZero
-              formData={formData}
-              onFormDataChange={handleFormDataChange}
+        </Box>}
+        <Box sx={{ flexGrow: 1, padding: '16px', overflowY: 'auto' }}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <TabZero
+                  formData={formData}
+                  onFormDataChange={handleFormDataChange}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/tab1"
-          element={
-            <TabOne
-              formData={formData}
-              onFormDataChange={handleFormDataChange}
+            <Route
+              path="/tab1"
+              element={
+                <TabOne
+                  formData={formData}
+                  onFormDataChange={handleFormDataChange}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/tab2"
-          element={
-            <TabTwo
-              formData={formData}
-              onFormDataChange={handleFormDataChange}
+            <Route
+              path="/tab2"
+              element={
+                <TabTwo
+                  formData={formData}
+                  onFormDataChange={handleFormDataChange}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/tab3"
-          element={
-            <TabThree
-              formData={formData}
-              onFormDataChange={handleFormDataChange}
+            <Route
+              path="/tab3"
+              element={
+                <TabThree
+                  formData={formData}
+                  onFormDataChange={handleFormDataChange}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/tab4"
-          element={
-            <TabFour
-              formData={formData}
-              onFormDataChange={handleFormDataChange}
+            <Route
+              path="/tab4"
+              element={
+                <TabFour
+                  formData={formData}
+                  onFormDataChange={handleFormDataChange}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/tab5"
-          element={
-            <TabFive
-              formData={formData}
-              onFormDataChange={handleFormDataChange}
+            <Route
+              path="/tab5"
+              element={
+                <TabFive
+                  formData={formData}
+                  onFormDataChange={handleFormDataChange}
+                />
+              }
             />
-          }
-        />
-      </Routes>
+          </Routes>
 
+        </Box>
+      </Box>
     </div>
   );
 }

@@ -18,7 +18,7 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { countryList } from "../Components/CountryList";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 // const Map = ({ postalCode })=>{
 //     useEffect(()=>{
@@ -36,6 +36,17 @@ const TabTwo = ({ formData, onFormDataChange }) => {
   const [filteredCountries, setFilteredCountries] = useState(countryList);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
+  const [qn4Error, setQn4Error] = useState('');
+  const [countryTwoError, setCountryTwoError] = useState('');
+  const [stateError, setStateError] = useState('');
+  const [postalCodeError, setPostalCodeError] = useState('');
+  const [cityError, setCityError] = useState('');
+  const [streetError, setStreetError] = useState('');
+  const [unitError, setUnitError] = useState('');
+  const [qn6Error, setQn6Error] = useState('');
+  const [qn7Error, setQn7Error] = useState('');
+  const [qn8Error, setQn8Error] = useState('');
+
   const Spacer = ({ size }) => (
     <div style={{ height: size, width: "100%" }}></div>
   );
@@ -47,12 +58,59 @@ const TabTwo = ({ formData, onFormDataChange }) => {
   };
 
   const handleNext = () => {
-    navigate('/tab3');  // Navigate to Tab 1 when the button is clicked
+    if (!formData.qn4) {
+      setQn4Error('Please fill in this field.')
+    }
+
+    if (!formData.countryTwo) {
+      setCountryTwoError('Please fill in this field.')
+    }
+
+    if (!formData.state) {
+      setStateError('Please fill in this field.')
+    }
+
+    if (!formData.city) {
+      setCityError('Please fill in this field.')
+    }
+
+    if (!formData.postalCode) {
+      setPostalCodeError('Please fill in this field.')
+    }
+
+    if (!formData.street) {
+      setStreetError('Please fill in this field.')
+    }
+
+    if (!formData.unit) {
+      setUnitError('Please fill in this field.')
+    }
+
+    if (!formData.qn6) {
+      setQn6Error('Please fill in this field.')
+    }
+
+    if (!formData.qn7) {
+      setQn7Error('Please fill in this field.')
+    }
+
+    if (!formData.qn8) {
+      setQn8Error('Please fill in this field.')
+    }
+
+    if (formData.qn4 && formData.countryTwo && formData.qn6 && formData.qn7
+      && !qn4Error && !qn6Error && !qn7Error
+    ) {
+      navigate('/tab3');
+    }
   };
 
   const handleNeedsChange = (e) => {
     const { value } = e.target;
     onFormDataChange("qn4", value);
+    if(value){
+      setQn4Error(null);
+    }
   };
 
   //address details
@@ -70,40 +128,67 @@ const TabTwo = ({ formData, onFormDataChange }) => {
     //setInputValue(country);
     setSelectedCountry(country)
     onFormDataChange("countryTwo", country);
+    if(country){
+      setCountryTwoError(null);
+    }
   };
 
   const handleStateChange = (e) => {
     const { value } = e.target;
     onFormDataChange("state", value);
+    if(value){
+      setStateError(null);
+    }
   };
   const handleCityChange = (e) => {
     const { value } = e.target;
     onFormDataChange("city", value);
+    if(value){
+      setCityError(null);
+    }
   };
   const handlePostalCodeChange = (e) => {
     const { value } = e.target;
     onFormDataChange("postalCode", value);
+    if(value){
+      setPostalCodeError(null);
+    }
   };
   const handleStreetChange = (e) => {
     const { value } = e.target;
     onFormDataChange("street", value);
+    if(value){
+      setStreetError(null);
+    }
   };
   const handleUnitChange = (e) => {
     const { value } = e.target;
     onFormDataChange("unit", value);
+    if(value){
+      setUnitError(null);
+    }
   };
 
   const handleQuestion1Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn6", value);
+    if(value){
+      setQn6Error(null);
+    }
   };
   const handleQuestion2Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn7", value);
+    if(value){
+      setQn7Error(null);
+    }
   };
   const handleQuestion3Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn8", value);
+    if(value){
+      setQn8Error(null);
+    }
   };
 
   // const fetchAddress = async (postalCode) => {
@@ -151,22 +236,24 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             </RadioGroup>
           </FormControl>
         </CardContent>
+        <span style={{ color: 'red' }}>{qn4Error}</span>
       </Card>
 
       <Spacer size="30px" />
       <Card variant="outlined" sx={{ marginBottom: 2 }}>
         <CardContent>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} marginBottom={2}>
             <Grid item xs={12} sm={12} lg={6} container alignItems="center">
               <Typography variant="h6" align="left">
                 Country
               </Typography>
+              <span style={{ color: 'red', marginLeft: '20px'}}>{countryTwoError}</span>
 
               <Autocomplete
                 fullWidth
                 id="country"
                 options={filteredCountries}
-                value={selectedCountry}
+                value={formData.countryTwo || selectedCountry}
                 inputValue={inputValue}
                 onInputChange={handleInputChange}
                 onChange={handleSelectCountry}
@@ -179,11 +266,14 @@ const TabTwo = ({ formData, onFormDataChange }) => {
                   />
                 )}
               />
+              
             </Grid>
-            <Grid item xs={12} sm={12} lg={6}>
+
+            <Grid item xs={12} sm={12} lg={6} container alignItems="center">
               <Typography variant="h6" align="left">
                 State
               </Typography>
+              <span style={{ color: 'red', marginLeft: '20px'}}>{stateError}</span>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -195,11 +285,13 @@ const TabTwo = ({ formData, onFormDataChange }) => {
               />
             </Grid>
           </Grid>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} marginBottom={2}>
             <Grid item xs={12} sm={12} lg={6} container alignItems="center">
               <Typography variant="h6" align="left">
                 City
               </Typography>
+              <span style={{ color: 'red', marginLeft: '20px'}}>{cityError}</span>
+              
               <TextField
                 fullWidth
                 variant="outlined"
@@ -210,10 +302,11 @@ const TabTwo = ({ formData, onFormDataChange }) => {
                 margin="normal"
               />
             </Grid>
-            <Grid item xs={12} sm={12} lg={6}>
+            <Grid item xs={12} sm={12} lg={6} container alignItems="center">
               <Typography variant="h6" align="left">
                 Postal Code
               </Typography>
+              <span style={{ color: 'red', marginLeft: '20px'}}>{postalCodeError}</span>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -233,6 +326,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
               <Typography variant="h6" align="left">
                 Street Address
               </Typography>
+              <span style={{ color: 'red', marginLeft: '20px'}}>{streetError}</span>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -243,10 +337,11 @@ const TabTwo = ({ formData, onFormDataChange }) => {
                 margin="normal"
               />
             </Grid>
-            <Grid item xs={12} sm={12} lg={6}>
+            <Grid item xs={12} sm={12} lg={6} container alignItems="center">
               <Typography variant="h6" align="left">
                 Unit Number
               </Typography>
+              <span style={{ color: 'red', marginLeft: '20px'}}>{unitError}</span>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -282,6 +377,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             </RadioGroup>
           </FormControl>
         </CardContent>
+        <span style={{ color: 'red' }}>{qn6Error}</span>
       </Card>
 
       <Spacer size="30px" />
@@ -302,6 +398,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             </RadioGroup>
           </FormControl>
         </CardContent>
+        <span style={{ color: 'red' }}>{qn7Error}</span>
       </Card>
 
       <Spacer size="30px" />
@@ -323,6 +420,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             </RadioGroup>
           </FormControl>
         </CardContent>
+        <span style={{ color: 'red' }}>{qn8Error}</span>
       </Card>
       <Spacer size="50px" />
 
@@ -332,7 +430,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handlePrev}
-            sx={{ backgroundColor: '#555555',width: "100px" }}
+            sx={{ backgroundColor: '#555555', width: "100px" }}
           >
             <i className="fa fa-angle-double-left"></i> Back
           </Button>
@@ -342,7 +440,7 @@ const TabTwo = ({ formData, onFormDataChange }) => {
             variant="contained"
             color="secondary"
             onClick={handleNext}
-            sx={{ backgroundColor: '#555555',width: "200px" }}
+            sx={{ backgroundColor: '#555555', width: "200px" }}
           >
             Save and Continue <i className="fa fa-angle-double-right"></i>
           </Button>

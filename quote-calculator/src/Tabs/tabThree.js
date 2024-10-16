@@ -113,8 +113,8 @@ const TabThree = ({ formData, onFormDataChange }) => {
             inputProps={{
               type: "number", // Set the type to number
             }}
-            error={!!widthError}
-            helperText={widthError}
+            //error={!!widthError}
+            //helperText={widthError}
             margin="normal"
           />
           <span style={{ color: 'red' }}>{widthError}</span>
@@ -135,8 +135,8 @@ const TabThree = ({ formData, onFormDataChange }) => {
             inputProps={{
               type: "number", // Set the type to number
             }}
-            error={!!lengthError}
-            helperText={lengthError}
+            //error={!!lengthError}
+            //helperText={lengthError}
             margin="normal"
           />
           <span style={{ color: 'red' }}>{lengthError}</span>
@@ -157,8 +157,8 @@ const TabThree = ({ formData, onFormDataChange }) => {
             inputProps={{
               type: "number", // Set the type to number
             }}
-            error={!!heightError}
-            helperText={heightError}
+            //error={!!heightError}
+            //helperText={heightError}
             margin="normal"
           />
           <span style={{ color: 'red' }}>{heightError}</span>

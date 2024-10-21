@@ -340,7 +340,7 @@ function App() {
         </AppBar>
         <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh' }}>
           {(location.pathname !== '/tab5') && <Box sx={{
-            width: isCollapsed ? { s: '60px', md: '80px' } : { s: '150px', md: '180px' }, 
+            width: isCollapsed ? { s: '60px', md: '80px' } : { s: '150px', md: '180px' },
             backgroundColor: 'grey.300',
             padding: '8px',
             display: 'flex',

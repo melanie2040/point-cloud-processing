@@ -356,7 +356,7 @@ function App() {
               Point Cloud and Image Processing Quote Calculator
             </Typography>
           </Toolbar>
-          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', backgroundColor: '#f5f5f5' }}>
+          {currentStep !== 5 && <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', backgroundColor: '#f5f5f5' }}>
             <Tabs value={currentStep} textColor="inherit"
               variant="scrollable"
               scrollButtons="auto"
@@ -380,8 +380,9 @@ function App() {
               ))}
             </Tabs>
           </Box>
+          }
         </AppBar>
-        <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh', marginTop: '90px' }}>
+        <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh', marginTop: '110px' }}>
           <Box sx={{ flexGrow: 1, padding: '16px', overflowY: 'auto' }}>
             <Routes>
               <Route

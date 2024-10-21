@@ -22,7 +22,7 @@ import {
   Container,
   Grid,
   Box, IconButton,
-  Alert
+  Alert, Tabs, Tab
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
@@ -346,7 +346,7 @@ function App() {
     <AlertProvider>
       <div className="App" id="content">
 
-        <AppBar position="static" sx={{ backgroundColor: "grey.500" }}>
+        <AppBar position="fixed" sx={{ backgroundColor: "grey.500" }}>
           <Toolbar>
             <img src={dcon} width="30" height="30" alt="Logo" />
             <Typography
@@ -356,50 +356,29 @@ function App() {
               Point Cloud and Image Processing Quote Calculator
             </Typography>
           </Toolbar>
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', backgroundColor: '#f5f5f5' }}>
+            <Tabs value={currentStep} textColor="inherit">
+              {steps.map((step, index) => (
+                <Tab
+                  key={index}
+                  label={(
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <i className={`fa ${step.icon}`} style={{ marginRight: '8px', color: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? 'grey' : 'black' }}></i>
+                      <span style={{ color: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? 'grey' : 'black' }}>{step.title}</span>
+                    </div>
+                  )}
+                  disabled={index > currentStep && !verifyAllTabsBeforeIndex(index)}
+                  onClick={() => handleStepClick(index)}
+                  sx={{
+                    opacity: index > currentStep ? 0.5 : 1,
+                    cursor: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? 'not-allowed' : 'pointer',
+                  }}
+                />
+              ))}
+            </Tabs>
+          </Box>
         </AppBar>
-        <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh' }}>
-          {(location.pathname !== '/tab5') && <Box sx={{
-            width: isCollapsed ? { s: '60px', md: '80px' } : { s: '140px', md: '180px' },
-            backgroundColor: 'grey.300',
-            padding: { s: '5px', md: '8px' },
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            height: '100vh',
-          }}>
-            <IconButton onClick={toggleSidebar} sx={{ marginBottom: '16px', alignSelf: 'flex-start' }}>
-              <MenuIcon />
-            </IconButton>
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className={`d-flex align-items-left step ${index === currentStep ? "active" : ""
-                  }`}
-                onClick={() => handleStepClick(index)}
-                style={{
-                  cursor: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? "not-allowed" : "pointer",
-                  marginBottom: "10px",
-                  padding: '8px',
-                  display: 'flex',
-                  alignItems: 'left',
-                }}
-              >
-                <span className="step-icon">
-                  <i className={`fa ${step.icon}`}
-                    style={{
-                      color: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? "grey" : "inherit", // Use "inherit" for normal color
-                    }}></i>
-                </span>
-                {!isCollapsed && (
-                  <span className="step-title" style={{
-                    marginLeft: "10px",
-                    color: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? "grey" : "inherit", // Use "inherit" for normal color
-                  }}>{step.title}</span>
-                )}
-              </div>
-            ))}
-
-          </Box>}
+        <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh', marginTop: '90px' }}>
           <Box sx={{ flexGrow: 1, padding: '16px', overflowY: 'auto' }}>
             <Routes>
               <Route

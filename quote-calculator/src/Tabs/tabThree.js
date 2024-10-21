@@ -34,21 +34,51 @@ const TabThree = ({ formData, onFormDataChange }) => {
         alert("Invalid scanning volume");
       }else{
         onFormDataChange("volume", volume);
+        const quote = calculateQuote(volume);
+        onFormDataChange("quote", quote);
         navigate("/tab4");
       }
     }
   };
 
-  const calculateVolume = ()=>{
-    if (formData.width && formData.length && formData.height) {
-      if (formData.width * formData.length * formData.height < 1) {
-        setVolumeError("Total volume has to be >= 1 cubic metres");
-      } else {
-        setVolumeError(null);
-      }
+  const calculateQuote = (volume)=>{
+    var quote = 0;
+    if(volume >= 1 && volume <= 20000){
+      quote = 0.005 * volume;
+    }else if (volume > 20000 && volume <= 250000){
+      quote = 0.004 * volume;
+    }else if (volume > 250000 && volume <=1000000){
+      quote = 0.003 * volume;
+    }else if (volume > 1000000 && volume <= 10000000){
+      quote = 0.002 * volume;
     }else{
-      setVolumeError("Missing");
+      quote = 'Please contact us for a quote';
     }
+
+    if(quote.type === Number){
+      const threeHourBlocks = volume / 15000;
+      if(volume%15000 != 0){
+        threeHourBlocks++;
+      }
+      //dashpack charge
+      const dashPackCharge = 400 * threeHourBlocks;
+      quote += dashPackCharge;
+
+      //manpower charge
+      const manpowerCharge = 35 * 3 * threeHourBlocks;
+      quote += manpowerCharge;
+
+      //transport charge
+      const sixHourBlocks = threeHourBlocks / 2;
+      if(threeHourBlocks %2 != 0){
+        sixHourBlocks++;
+      }
+      const transportCharge = 100 * sixHourBlocks;
+      quote += transportCharge;
+
+    }
+
+    return quote;
   }
 
   const handleChange = (e) => {

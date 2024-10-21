@@ -21,12 +21,16 @@ import {
   CardContent,
   Container,
   Grid,
-  Box, IconButton
+  Box, IconButton,
+  Alert
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu'
+import { AlertProvider } from "./Components/AlertContext";
+import { useAlert } from "./Components/AlertContext";
+
 
 function App() {
   const navigate = useNavigate();
@@ -34,6 +38,8 @@ function App() {
   const [currentStep, setCurrentStep] = useState(0);
 
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const showAlert = useAlert();
 
   const toggleSidebar = () => {
     setIsCollapsed((prev) => !prev);
@@ -72,12 +78,23 @@ function App() {
     { icon: "fa-map-marker", title: "Site" },
     { icon: "fa-wallet", title: "Quotation" },
     { icon: "fa-image", title: "Imagery" },
-    //{ icon: "fa-scroll", title: "Review" },
+
+    
   ];
+
+  const verifyAllTabsBeforeIndex = (index) => {
+    for (let i = 0; i < index; i++) {
+      const isValid = verifyTab(i);
+      if (!isValid) {
+        return false; 
+      }
+    }
+    return true;
+  };
 
   const handleStepClick = (index) => {
     if (index > currentStep) {
-      const response = verifyTab(currentStep);
+      const response = verifyAllTabsBeforeIndex(index);
       if (response == true) {
         setCurrentStep(index);
         switch (index) {
@@ -95,9 +112,6 @@ function App() {
             break;
           case 4:
             navigate("/tab4");
-            break;
-          case 5:
-            navigate("/tab5");
             break;
           default:
             navigate("/");
@@ -122,9 +136,6 @@ function App() {
         case 4:
           navigate("/tab4");
           break;
-        case 5:
-          navigate("/tab5");
-          break;
         default:
           navigate("/");
       }
@@ -133,10 +144,17 @@ function App() {
 
   };
 
+  const [open, setOpen] = React.useState(false);
+  const handleClick = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const verifyTab = (index) => {
     switch (index) {
       case 0:
-        if (!formData.firstName || !formData.lastName || !formData.country) {
+        if (!formData.firstName || !formData.lastName || !formData.country
+          || !formData.email || !formData.contact || !formData.industry || !formData.companyName) {
+          //handleClick();
+          //showAlert("Please fill in all fields");
           return false;
         } else {
           return true;
@@ -148,13 +166,24 @@ function App() {
           return true;
         }
       case 2:
-        return false;
+        if (!formData.qn4 || !formData.countryTwo || !formData.state || !formData.postalCode
+          || !formData.city || !formData.street || !formData.unit || !formData.qn6 || !formData.qn7 || !formData.qn8) {
+          return false;
+        } else {
+          return true;
+        }
       case 3:
-        return false;
+        if (!formData.width || !formData.length || !formData.height || !formData.volume || !formData.quote) {
+          return false;
+        } else {
+          return true;
+        }
       case 4:
-        return false;
-      case 5:
-        return false;
+        if (!formData.photos || !formData.calendar) {
+          return false;
+        } else {
+          return true;
+        }
       default:
         return false;
     }
@@ -195,38 +224,6 @@ function App() {
     calendar: "",
     // Add other fields as needed
   });
-
-  const calculateQuote = () => {
-    const volume = formData.volume;
-
-    if (volume >= 1 && volume <= 20000) {
-      formData.quote = 0.005 * volume;
-    } else if (volume > 20000 && volume <= 250000) {
-      formData.quote = 0.004 * volume;
-    } else if (volume > 250000 && volume <= 1000000) {
-      formData.quote = 0.003 * volume;
-    } else if (volume > 1000000 && volume <= 10000000) {
-      formData.quote = 0.002 * volume;
-    } else if (volume > 10000000) {
-      formData.quote = "Please contact us for a quote";
-    } else {
-      //setValidationError("Total volume has to be >= 1 cubic metres");
-      //onFormDataChange('volume', null);
-      //onFormDataChange('quote', null);
-    }
-  };
-
-  const calculateVolume = () => {
-    const width = formData.width;
-    const length = formData.length;
-    const height = formData.height;
-    if (width && length && height) {
-      const volume = width * length * height;
-      formData.volume = volume;
-      calculateQuote();
-    }
-  };
-
   const handleFormDataChange = (field, value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -327,117 +324,119 @@ function App() {
   };
 
   return (
-    <div className="App" id="content">
+    <AlertProvider>
+      <div className="App" id="content">
 
-      <AppBar position="static" sx={{ backgroundColor: "grey.500" }}>
-        <Toolbar>
-          <img src={dcon} width="30" height="30" alt="Logo" />
-          <Typography
-            variant="h6"
-            style={{ marginLeft: "16px", fontWeight: "bold" }}
-          >
-            Point Cloud and Image Processing Quote Calculator
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh' }}>
-        {(location.pathname !== '/tab5') && <Box sx={{
-          width: isCollapsed ? '80px' : '180px',
-          backgroundColor: 'grey.300',
-          padding: '8px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          height: '100vh',
-        }}>
-          <IconButton onClick={toggleSidebar} sx={{ marginBottom: '16px', alignSelf: 'flex-start' }}>
-            <MenuIcon />
-          </IconButton>
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className={`d-flex align-items-left step ${index === currentStep ? "active" : ""
-                }`}
-              onClick={() => handleStepClick(index)}
-              style={{
-                cursor: "pointer",
-                marginBottom: "10px",
-                padding: '8px',
-                display: 'flex',
-                alignItems: 'left',
-              }}
+        <AppBar position="static" sx={{ backgroundColor: "grey.500" }}>
+          <Toolbar>
+            <img src={dcon} width="30" height="30" alt="Logo" />
+            <Typography
+              variant="h6"
+              style={{ marginLeft: "16px", fontWeight: "bold" }}
             >
-              <span className="step-icon">
-                <i className={`fa ${step.icon}`}></i>
-              </span>
-              {!isCollapsed && (
-                <span style={{ marginLeft: "10px" }}>{step.title}</span>
-              )}
-            </div>
-          ))}
+              Point Cloud and Image Processing Quote Calculator
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh' }}>
+          {(location.pathname !== '/tab5') && <Box sx={{
+            width: isCollapsed ? '80px' : '180px',
+            backgroundColor: 'grey.300',
+            padding: '8px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            height: '100vh',
+          }}>
+            <IconButton onClick={toggleSidebar} sx={{ marginBottom: '16px', alignSelf: 'flex-start' }}>
+              <MenuIcon />
+            </IconButton>
+            {steps.map((step, index) => (
+              <div
+                key={index}
+                className={`d-flex align-items-left step ${index === currentStep ? "active" : ""
+                  }`}
+                onClick={() => handleStepClick(index)}
+                style={{
+                  cursor: "pointer",
+                  marginBottom: "10px",
+                  padding: '8px',
+                  display: 'flex',
+                  alignItems: 'left',
+                }}
+              >
+                <span className="step-icon">
+                  <i className={`fa ${step.icon}`}></i>
+                </span>
+                {!isCollapsed && (
+                  <span style={{ marginLeft: "10px" }}>{step.title}</span>
+                )}
+              </div>
+            ))}
 
-        </Box>}
-        <Box sx={{ flexGrow: 1, padding: '16px', overflowY: 'auto' }}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <TabZero
-                  formData={formData}
-                  onFormDataChange={handleFormDataChange}
-                />
-              }
-            />
-            <Route
-              path="/tab1"
-              element={
-                <TabOne
-                  formData={formData}
-                  onFormDataChange={handleFormDataChange}
-                />
-              }
-            />
-            <Route
-              path="/tab2"
-              element={
-                <TabTwo
-                  formData={formData}
-                  onFormDataChange={handleFormDataChange}
-                />
-              }
-            />
-            <Route
-              path="/tab3"
-              element={
-                <TabThree
-                  formData={formData}
-                  onFormDataChange={handleFormDataChange}
-                />
-              }
-            />
-            <Route
-              path="/tab4"
-              element={
-                <TabFour
-                  formData={formData}
-                  onFormDataChange={handleFormDataChange}
-                />
-              }
-            />
-            <Route
-              path="/tab5"
-              element={
-                <TabFive
-                  formData={formData}
-                  onFormDataChange={handleFormDataChange}
-                />
-              }
-            />
-          </Routes>
+          </Box>}
+          <Box sx={{ flexGrow: 1, padding: '16px', overflowY: 'auto' }}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <TabZero
+                    formData={formData}
+                    onFormDataChange={handleFormDataChange}
+                  />
+                }
+              />
+              <Route
+                path="/tab1"
+                element={
+                  <TabOne
+                    formData={formData}
+                    onFormDataChange={handleFormDataChange}
+                  />
+                }
+              />
+              <Route
+                path="/tab2"
+                element={
+                  <TabTwo
+                    formData={formData}
+                    onFormDataChange={handleFormDataChange}
+                  />
+                }
+              />
+              <Route
+                path="/tab3"
+                element={
+                  <TabThree
+                    formData={formData}
+                    onFormDataChange={handleFormDataChange}
+                  />
+                }
+              />
+              <Route
+                path="/tab4"
+                element={
+                  <TabFour
+                    formData={formData}
+                    onFormDataChange={handleFormDataChange}
+                  />
+                }
+              />
+              <Route
+                path="/tab5"
+                element={
+                  <TabFive
+                    formData={formData}
+                    onFormDataChange={handleFormDataChange}
+                  />
+                }
+              />
+            </Routes>
 
+          </Box>
         </Box>
-      </Box>
-    </div>
+      </div>
+    </AlertProvider>
   );
 }
 

@@ -140,7 +140,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
               </Typography>
               <Typography variant="body1" align="left">
                 {formData.street}, {formData.unit}, {formData.city},{" "}
-                {formData.state}, {formData.countryTwo}, {formData.postalCode},
+                {formData.state}, {formData.countryTwo}, {formData.postalCode}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -181,7 +181,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                 Width:{" "}
               </Typography>
               <Typography variant="body1" align="left">
-                {formData.width}
+                {formData.width} m
               </Typography>
             </Grid>
             <Grid item xs={4} sm={4}>
@@ -189,7 +189,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                 Length:{" "}
               </Typography>
               <Typography variant="body1" align="left">
-                {formData.length}
+                {formData.length} m
               </Typography>
             </Grid>
             <Grid item xs={4} sm={4}>
@@ -197,7 +197,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                 Height:{" "}
               </Typography>
               <Typography variant="body1" align="left">
-                {formData.height}
+                {formData.height} m
               </Typography>
             </Grid>
             <Grid item xs={6} sm={6}>
@@ -205,7 +205,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                 Volume:{" "}
               </Typography>
               <Typography variant="body1" align="left">
-                {formData.volume}
+                {formData.volume} m<sup>3</sup>
               </Typography>
             </Grid>
             <Grid item xs={6} sm={6}>
@@ -213,7 +213,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                 Estimated Quote:{" "}
               </Typography>
               <Typography variant="body1" align="left">
-                {formData.quote}
+                {formData.quote} USD
               </Typography>
             </Grid>
           </Grid>

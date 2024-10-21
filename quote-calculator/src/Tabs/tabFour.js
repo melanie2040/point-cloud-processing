@@ -35,7 +35,11 @@ const TabFour = ({ formData, onFormDataChange }) => {
       setDateError("Please choose a date");
     }
 
-    if(formData.calendar && !dateError){
+    if(!formData.photos){
+      setImagesError("Please upload images of your site");
+    }
+
+    if(formData.calendar && !dateError && formData.photos && !imagesError){
       navigate('/tab5'); 
     }
 
@@ -64,6 +68,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
   
       // Now update formData with the new images array
       onFormDataChange("photos", update);
+      setImagesError(null);
   
       return updatedImages; // Return the updated images array for local state
     });
@@ -137,7 +142,8 @@ const TabFour = ({ formData, onFormDataChange }) => {
             <Box mt={2}>
               <Typography variant="body1">Selected Files:</Typography>
               <ol>
-                {images.map((file, index) => (
+    
+                {images.length>0 && images.map((file, index) => (
                   <li key={index}>
                     {file.name}
                     <br />
@@ -162,6 +168,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
             </Box>
           </Box>
         </CardContent>
+        <span style={{ color: 'red' }}>{imagesError}</span>
       </Card>
 
       <Spacer size="30px" />
@@ -187,7 +194,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
             <Box mt={2}>
               <Typography variant="body1">Selected Files:</Typography>
               <ol>
-                {floorPlan.map((file, index) => (
+                {floorPlan.length > 0 && floorPlan.map((file, index) => (
                   <li key={index}>
                     {file.name}
                     <br />

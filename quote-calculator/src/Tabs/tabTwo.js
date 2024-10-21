@@ -98,8 +98,10 @@ const TabTwo = ({ formData, onFormDataChange }) => {
       setQn8Error('Please fill in this field.')
     }
 
-    if (formData.qn4 && formData.countryTwo && formData.qn6 && formData.qn7
-      && !qn4Error && !qn6Error && !qn7Error
+    if (formData.qn4 && formData.countryTwo && formData.qn6 && formData.qn7 && formData.qn8
+      && !qn4Error && !countryTwoError && !qn6Error && !qn7Error && !qn8Error 
+      && formData.state && formData.city && formData.postalCode && formData.street && formData.unit
+      && !stateError && !cityError && !postalCodeError && !streetError && !unitError
     ) {
       navigate('/tab3');
     }

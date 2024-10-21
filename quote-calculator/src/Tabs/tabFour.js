@@ -261,6 +261,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
             color="primary"
             onClick={handleNext}
             sx={{ width: "200px" }}
+            marginBottom= "50px"
           >
             Submit <i className="fa fa-angle-double-right"></i>
           </Button>

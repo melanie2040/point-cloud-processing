@@ -357,7 +357,10 @@ function App() {
             </Typography>
           </Toolbar>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', backgroundColor: '#f5f5f5' }}>
-            <Tabs value={currentStep} textColor="inherit">
+            <Tabs value={currentStep} textColor="inherit"
+              variant="scrollable"
+              scrollButtons="auto"
+              sx={{ overflow: 'hidden' }}>
               {steps.map((step, index) => (
                 <Tab
                   key={index}

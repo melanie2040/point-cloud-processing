@@ -85,3 +85,18 @@
   color: red;
   margin-top: 10px;
 }
+
+@media (max-width: 768px) { /* Adjust the width as needed */
+  .step {
+    padding: 4px; /* Make padding smaller */
+    margin-bottom: 5px; /* Adjust margin if needed */
+  }
+
+  .step-icon {
+    font-size: 14px; /* Adjust icon size if needed */
+  }
+
+  .step-title {
+    font-size: 12px; /* Optionally hide the title on smaller screens */
+  }
+}

@@ -37,7 +37,21 @@ function App() {
 
   const [currentStep, setCurrentStep] = useState(0);
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 768);
+  
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsCollapsed(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const showAlert = useAlert();
 
@@ -340,9 +354,9 @@ function App() {
         </AppBar>
         <Box sx={{ display: 'flex', flexGrow: 1, height: '100vh' }}>
           {(location.pathname !== '/tab5') && <Box sx={{
-            width: isCollapsed ? { s: '60px', md: '80px' } : { s: '150px', md: '180px' },
+            width: isCollapsed ? { s: '60px', md: '80px' } : { s: '140px', md: '180px' },
             backgroundColor: 'grey.300',
-            padding: '8px',
+            padding: { s: '5px', md: '8px' },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',

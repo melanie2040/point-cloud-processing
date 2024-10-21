@@ -30,7 +30,12 @@ import { useLocation } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu'
 import { AlertProvider } from "./Components/AlertContext";
 import { useAlert } from "./Components/AlertContext";
+import { Navigate, Outlet } from 'react-router-dom';
 
+
+const ProtectedRoute = ({ isAllowed }) => {
+  return isAllowed ? <Outlet /> : <Navigate to="/" replace />;
+};
 
 function App() {
   const navigate = useNavigate();
@@ -38,7 +43,7 @@ function App() {
   const [currentStep, setCurrentStep] = useState(0);
 
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 768);
-  
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,7 +51,7 @@ function App() {
     };
 
     window.addEventListener('resize', handleResize);
-    
+
     // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -93,14 +98,14 @@ function App() {
     { icon: "fa-wallet", title: "Quotation" },
     { icon: "fa-image", title: "Imagery" },
 
-    
+
   ];
 
   const verifyAllTabsBeforeIndex = (index) => {
     for (let i = 0; i < index; i++) {
       const isValid = verifyTab(i);
       if (!isValid) {
-        return false; 
+        return false;
       }
     }
     return true;
@@ -372,7 +377,7 @@ function App() {
                   }`}
                 onClick={() => handleStepClick(index)}
                 style={{
-                  cursor: "pointer",
+                  cursor: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? "not-allowed" : "pointer",
                   marginBottom: "10px",
                   padding: '8px',
                   display: 'flex',
@@ -380,10 +385,16 @@ function App() {
                 }}
               >
                 <span className="step-icon">
-                  <i className={`fa ${step.icon}`}></i>
+                  <i className={`fa ${step.icon}`}
+                    style={{
+                      color: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? "grey" : "inherit", // Use "inherit" for normal color
+                    }}></i>
                 </span>
                 {!isCollapsed && (
-                  <span className="step-title" style={{ marginLeft: "10px" }}>{step.title}</span>
+                  <span className="step-title" style={{
+                    marginLeft: "10px",
+                    color: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? "grey" : "inherit", // Use "inherit" for normal color
+                  }}>{step.title}</span>
                 )}
               </div>
             ))}
@@ -400,51 +411,61 @@ function App() {
                   />
                 }
               />
-              <Route
-                path="/tab1"
-                element={
-                  <TabOne
-                    formData={formData}
-                    onFormDataChange={handleFormDataChange}
-                  />
-                }
-              />
-              <Route
-                path="/tab2"
-                element={
-                  <TabTwo
-                    formData={formData}
-                    onFormDataChange={handleFormDataChange}
-                  />
-                }
-              />
-              <Route
-                path="/tab3"
-                element={
-                  <TabThree
-                    formData={formData}
-                    onFormDataChange={handleFormDataChange}
-                  />
-                }
-              />
-              <Route
-                path="/tab4"
-                element={
-                  <TabFour
-                    formData={formData}
-                    onFormDataChange={handleFormDataChange}
-                  />
-                }
-              />
-              <Route
-                path="/tab5"
-                element={
-                  <TabFive
-                    formData={formData}
-                    onFormDataChange={handleFormDataChange}
-                  />
-                }
-              />
+              <Route element={<ProtectedRoute isAllowed={verifyAllTabsBeforeIndex(1)} />}>
+                <Route
+                  path="/tab1"
+                  element={
+                    <TabOne
+                      formData={formData}
+                      onFormDataChange={handleFormDataChange}
+                    />
+                  }
+                />
+              </Route>
+              <Route element={<ProtectedRoute isAllowed={verifyAllTabsBeforeIndex(2)} />}>
+                <Route
+                  path="/tab2"
+                  element={
+                    <TabTwo
+                      formData={formData}
+                      onFormDataChange={handleFormDataChange}
+                    />
+                  }
+                />
+              </Route>
+              <Route element={<ProtectedRoute isAllowed={verifyAllTabsBeforeIndex(3)} />}>
+                <Route
+                  path="/tab3"
+                  element={
+                    <TabThree
+                      formData={formData}
+                      onFormDataChange={handleFormDataChange}
+                    />
+                  }
+                />
+              </Route>
+              <Route element={<ProtectedRoute isAllowed={verifyAllTabsBeforeIndex(4)} />}>
+                <Route
+                  path="/tab4"
+                  element={
+                    <TabFour
+                      formData={formData}
+                      onFormDataChange={handleFormDataChange}
+                    />
+                  }
+                />
+              </Route>
+              <Route element={<ProtectedRoute isAllowed={verifyAllTabsBeforeIndex(5)} />}>
+                <Route
+                  path="/tab5"
+                  element={
+                    <TabFive
+                      formData={formData}
+                      onFormDataChange={handleFormDataChange}
+                    />
+                  }
+                />
+              </Route>
             </Routes>
 
           </Box>

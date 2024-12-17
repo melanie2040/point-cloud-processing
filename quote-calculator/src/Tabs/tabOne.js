@@ -13,66 +13,26 @@ import {
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom'; 
 
-const TabOne = ({ formData, onFormDataChange }) => {
+const TabOne = ({ formData, onFormDataChange, errors }) => {
   const Spacer = ({ size }) => (
     <div style={{ height: size, width: "100%" }}></div>
   );
-
-  const [qn1Error, setQn1Error] = useState('');
-  const [qn2Error, setQn2Error] = useState('');
-  const [qn3Error, setQn3Error] = useState('');
-
   const navigate = useNavigate();
-
-  const handlePrev = () => {
-    navigate('/');  
-  };
-
-  const handleNext = () => {
-
-    if(!formData.qn1){
-      setQn1Error('Please fill in this field.')
-    }
-
-    if(!formData.qn2){
-      setQn2Error('Please fill in this field.')
-    }
-
-    if(!formData.qn3){
-      setQn3Error('Please fill in this field.')
-    }
-
-    if(formData.qn1 && formData.qn2 && formData.qn3
-      && !qn1Error && !qn2Error && !qn3Error
-    ){
-      navigate('/tab2'); 
-    }
-
-
-    
-  };
 
   const handleQuestion1Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn1", value);
-    if(value){
-      setQn1Error(null);
-    }
 
   };
   const handleQuestion2Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn2", value);
-    if(value){
-      setQn2Error(null);
-    }
+
   };
   const handleQuestion3Change = (e) => {
     const { value } = e.target;
     onFormDataChange("qn3", value);
-    if(value){
-      setQn3Error(null);
-    }
+
   };
 
   return (
@@ -101,7 +61,7 @@ const TabOne = ({ formData, onFormDataChange }) => {
           </FormControl>
 
         </CardContent>
-        <span style={{ color: 'red' }}>{qn1Error}</span>
+        {errors.qn1 && !formData.qn1 && <span style={{ color: 'red' }}>{errors.qn1}</span>}
       </Card>
 
       <Spacer size="30px" />
@@ -124,7 +84,7 @@ const TabOne = ({ formData, onFormDataChange }) => {
             </RadioGroup>
           </FormControl>
         </CardContent>
-        <span style={{ color: 'red' }}>{qn2Error}</span>
+        {errors.qn2 && !formData.qn2 && <span style={{ color: 'red' }}>{errors.qn2}</span>}
       </Card>
 
       <Spacer size="30px" />
@@ -146,34 +106,9 @@ const TabOne = ({ formData, onFormDataChange }) => {
             </RadioGroup>
           </FormControl>
         </CardContent>
-        <span style={{ color: 'red' }}>{qn3Error}</span>
+        {errors.qn3 && !formData.qn3 && <span style={{ color: 'red' }}>{errors.qn3}</span>}
       </Card>
 
-      <Spacer size="50px" />
-
-      <Grid container spacing={2}>
-        <Grid item xs={6} container justifyContent="flex-start">
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handlePrev}
-            sx={{ backgroundColor: '#555555',width: "100px" }}
-          >
-            <i className="fa fa-angle-double-left"></i> Back
-          </Button>
-        </Grid>
-        <Grid item xs={6} container justifyContent="flex-end">
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleNext}
-            sx={{ backgroundColor: '#555555',width: "200px" }}
-          >
-            Save and Continue <i className="fa fa-angle-double-right"></i>
-          </Button>
-        </Grid>
-      </Grid>
-      <Spacer size="50px" />
     </Container>
   );
 };

@@ -25,25 +25,6 @@ const TabFour = ({ formData, onFormDataChange }) => {
 
   const navigate = useNavigate();
 
-  const handlePrev = () => {
-    navigate('/tab3');
-  };
-
-  const handleNext = () => {
-
-    if(!formData.calendar){
-      setDateError("Please choose a date");
-    }
-
-    if(!formData.photos){
-      setImagesError("Please upload images of your site");
-    }
-
-    if(formData.calendar && !dateError && formData.photos && !imagesError){
-      navigate('/tab5'); 
-    }
-
-  };
 
   const handleCalendarChange = (newDate) => {
     setDate(newDate);
@@ -124,7 +105,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
         <CardContent>
           <Box sx={{ mt: 2 }}>
             <Typography variant="h6">
-              Please upload pictures of your site.
+              Please upload photos of your site.
             </Typography>
             <input
               accept="image/*"
@@ -242,32 +223,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
         </CardContent>
         <span style={{ color: 'red' }}>{dateError}</span>
       </Card>
-      <Spacer size="50px" />
 
-      <Grid container spacing={2}>
-        <Grid item xs={6} container justifyContent="flex-start">
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handlePrev}
-            sx={{ backgroundColor: '#555555',width: "100px" }}
-          >
-            <i className="fa fa-angle-double-left"></i> Back
-          </Button>
-        </Grid>
-        <Grid item xs={6} container justifyContent="flex-end">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleNext}
-            sx={{ width: "200px" }}
-            marginBottom= "50px"
-          >
-            Submit <i className="fa fa-angle-double-right"></i>
-          </Button>
-        </Grid>
-      </Grid>
-      <Spacer size="50px" />
     </Container>
   );
 };

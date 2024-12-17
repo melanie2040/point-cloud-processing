@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Grid, TextField, Typography, Box, Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
-const TabThree = ({ formData, onFormDataChange }) => {
+const TabThree = ({ formData, onFormDataChange, errors }) => {
   const [widthError, setWidthError] = useState(null);
   const [lengthError, setLengthError] = useState(null);
   const [heightError, setHeightError] = useState(null);
@@ -85,26 +85,6 @@ const TabThree = ({ formData, onFormDataChange }) => {
     const { name, value } = e.target;
     //setWidth(value);
     onFormDataChange(name, value);
-    if (name == "width") {
-      if (value <= 0) {
-        setWidthError("Invalid value entered");
-      } else {
-        setWidthError(null);
-      }
-    } else if (name == "length") {
-      if (value <= 0) {
-        setLengthError("Invalid value entered");
-      } else {
-        setLengthError(null);
-      }
-    } else if (name == "height") {
-      if (value <= 0) {
-        setHeightError("Invalid value entered");
-      } else {
-        setHeightError(null);
-      }
-    }
-
 
     //calculateVolume();
   };
@@ -147,7 +127,7 @@ const TabThree = ({ formData, onFormDataChange }) => {
             //helperText={widthError}
             margin="normal"
           />
-          <span style={{ color: 'red' }}>{widthError}</span>
+          {errors.width && !formData.width && <span style={{ color: 'red' }}>{errors.width}</span>}
         </Box>
 
         <Box flex={1} mr={2} minWidth="250px">
@@ -169,7 +149,7 @@ const TabThree = ({ formData, onFormDataChange }) => {
             //helperText={lengthError}
             margin="normal"
           />
-          <span style={{ color: 'red' }}>{lengthError}</span>
+          {errors.length && !formData.length && <span style={{ color: 'red' }}>{errors.length}</span>}
         </Box>
 
         <Box flex={1} mr={2} minWidth="250px">
@@ -191,36 +171,11 @@ const TabThree = ({ formData, onFormDataChange }) => {
             //helperText={heightError}
             margin="normal"
           />
-          <span style={{ color: 'red' }}>{heightError}</span>
+          {errors.height && !formData.height && <span style={{ color: 'red' }}>{errors.height}</span>}
         </Box>
 
       </Box>
 
-      <Spacer size="50px" />
-      <span style={{ color: 'red' }}>{volumeError}</span>
-      <Grid container spacing={2}>
-        <Grid item xs={6} container justifyContent="flex-start">
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handlePrev}
-            sx={{ backgroundColor: '#555555', width: "100px" }}
-          >
-            <i className="fa fa-angle-double-left"></i> Back
-          </Button>
-        </Grid>
-        <Grid item xs={6} container justifyContent="flex-end">
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleNext}
-            sx={{ backgroundColor: '#555555', width: "200px" }}
-          >
-            Save and Continue <i className="fa fa-angle-double-right"></i>
-          </Button>
-        </Grid>
-      </Grid>
-      <Spacer size="50px" />
     </Container>
 
     // <div className="row justify-content-center">

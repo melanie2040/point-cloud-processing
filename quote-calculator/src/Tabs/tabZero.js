@@ -15,52 +15,11 @@ import { getCountryCallingCode } from "libphonenumber-js";
 import { countryList } from "../Components/CountryList";
 import { useNavigate } from "react-router-dom";
 
-const TabZero = ({ formData, onFormDataChange }) => {
+const TabZero = ({ formData, onFormDataChange, errors }) => {
   const navigate = useNavigate();
   const Spacer = ({ size }) => (
     <div style={{ height: size, width: "100%" }}></div>
   );
-
-  const [firstNameError, setFirstNameError] = useState('');
-  const [lastNameError, setLastNameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [countryError, setCountryError] = useState('');
-  const [contactError, setContactError] = useState('');
-  const [industryError, setIndustryError] = useState('');
-  const [companyError, setCompanyError] = useState('');
-
-  const handleNext = () => {
-
-    if (!formData.firstName) {
-      setFirstNameError('Please fill in first name');
-    }
-    if (!formData.lastName) {
-      setLastNameError('Please fill in last name');
-    }
-    if (!formData.email) {
-      setEmailError('Please fill in email');
-    }
-    if (!formData.country) {
-      setCountryError('Please fill in country');
-    }
-    if (!formData.contact) {
-      setContactError('Please fill in contact');
-    }
-    if (!formData.industry) {
-      setIndustryError('Please fill in industry');
-    }
-    if (!formData.companyName) {
-      setCompanyError('Please fill in company');
-    }
-
-    if ((formData.firstName && formData.lastName && formData.email && formData.contact
-      && formData.industry && formData.country && formData.companyName && !firstNameError
-      && !lastNameError && !emailError && !contactError && !countryError && !industryError && !companyError)) {
-      navigate("/tab1");
-    }
-
-  };
-
 
   const industries = [
     "Aerospace & Defence",
@@ -108,42 +67,56 @@ const TabZero = ({ formData, onFormDataChange }) => {
     );
   };
 
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        func.apply(null, args);
+      }, delay);
+    };
+  };
+
   const handleFirstNameChange = (e) => {
     const { value } = e.target;
     onFormDataChange("firstName", value);
-    if (value) {
-      setFirstNameError(null);
-    }
+
   };
 
   const handleLastNameChange = (e) => {
     const { value } = e.target;
     onFormDataChange("lastName", value);
-    if (value) {
-      setLastNameError(null);
-    }
+
   };
 
   const handleContactChange = (e) => {
     const { value } = e.target;
     onFormDataChange("contact", value);
-    if (value) {
-      setContactError(null);
-    }
+
   };
+
+  let timeoutId = null;
 
   const handleEmailChange = (e) => {
     const { value } = e.target;
     onFormDataChange("email", value);
-    const emailPattern = /^.+@.+\.[a-zA-Z]{2,63}$/;
-    if (!emailPattern.test(value) || !value) {
-      // Simple regex for email validation
-      setError("Invalid corporate email format");
-      setEmailError("Invalid corporate email format");
-    } else {
-      setError(null); // Clear error if valid
-      setEmailError(null);
-    }
+
+    // Clear previous timeout if it exists
+    // if (timeoutId) {
+    //   clearTimeout(timeoutId);
+    // }
+
+    // // Set a new timeout
+    // timeoutId = setTimeout(() => {
+    //   const emailPattern = /^.+@.+\.[a-zA-Z]{2,63}$/;
+    //   if (!emailPattern.test(value) || !value || value.includes('@gmail.com') || value.includes('@yahoo.com') || value.includes('@outlook.com') || value.includes('@hotmail.com')) {
+    //     setEmailError("Invalid corporate email format");
+    //   } else {
+    //     setEmailError(null);
+    //   }
+    // }, 1500); // Adjust the delay (300ms) as needed
   };
 
   const getCountryCode = (countryName) => {
@@ -162,9 +135,6 @@ const TabZero = ({ formData, onFormDataChange }) => {
     //setInputValue(country);
     setSelectedCountry(country);
     onFormDataChange("country", country);
-    if (country) {
-      setCountryError(null);
-    }
 
     const cc = getCountryCode(country);
     setCountryCode(cc);
@@ -175,18 +145,12 @@ const TabZero = ({ formData, onFormDataChange }) => {
     onFormDataChange("industry", industry);
     handleMenuClose();
 
-    if (industry) {
-      setIndustryError(null);
-    }
   };
 
   const handleCompanyNameChange = (e) => {
     const { value } = e.target;
     onFormDataChange("companyName", value);
 
-    if (value) {
-      setCompanyError(null);
-    }
   };
 
   return (
@@ -205,7 +169,7 @@ const TabZero = ({ formData, onFormDataChange }) => {
             require
             margin="normal"
           />
-          <span style={{ color: 'red' }}>{firstNameError}</span>
+          {errors.firstName && !formData.firstName && <span style={{ color: 'red' }}>{errors.firstName}</span>}
         </Box>
         <Box flex={1} mr={2} minWidth="250px">
           <Typography variant="h6" align="left">
@@ -220,7 +184,7 @@ const TabZero = ({ formData, onFormDataChange }) => {
             require
             margin="normal"
           />
-          <span style={{ color: 'red' }}>{lastNameError}</span>
+          {errors.lastName && !formData.lastName && <span style={{ color: 'red' }}>{errors.lastName}</span>}
         </Box>
       </Box>
 
@@ -241,7 +205,7 @@ const TabZero = ({ formData, onFormDataChange }) => {
           require
           margin="normal"
         />
-        <span style={{ color: 'red' }}>{emailError}</span>
+        {errors.email && !formData.email && <span style={{ color: 'red' }}>{errors.email}</span>}
       </Grid>
 
       <Spacer size="30px" />
@@ -268,7 +232,7 @@ const TabZero = ({ formData, onFormDataChange }) => {
             />
           )}
         />
-        <span style={{ color: 'red' }}>{countryError}</span>
+        {errors.country && !formData.country && <span style={{ color: 'red' }}>{errors.country}</span>}
       </Grid>
 
       <Spacer size="30px" />
@@ -295,7 +259,7 @@ const TabZero = ({ formData, onFormDataChange }) => {
             }}
             margin="normal"
           />
-          <span style={{ color: 'red' }}>{contactError}</span>
+          {errors.contact && !formData.contact && <span style={{ color: 'red' }}>{errors.contact}</span>}
         </Grid>
       </Grid>
 
@@ -330,7 +294,7 @@ const TabZero = ({ formData, onFormDataChange }) => {
             </Menu>
 
           </Box>
-          <span style={{ color: 'red' }}>{industryError}</span>
+          {errors.industry && !formData.industry && <span style={{ color: 'red' }}>{errors.industry}</span>}
         </Box>
 
         <Box flex={1} mr={2} minWidth="250px">
@@ -346,23 +310,10 @@ const TabZero = ({ formData, onFormDataChange }) => {
             require
             margin="normal"
           />
-          <span style={{ color: 'red' }}>{companyError}</span>
+          {errors.companyName && !formData.companyName && <span style={{ color: 'red' }}>{errors.companyName}</span>}
         </Box>
       </Box>
 
-      <Spacer size="50px" />
-      <Grid container justifyContent="flex-end">
-
-          <Button
-            variant="contained"
-            onClick={handleNext}
-            sx={{ backgroundColor: '#555555', width: "200px" }}
-          >
-            Save and Continue <i className="fa fa-angle-double-right"></i>
-          </Button>
-
-      </Grid>
-      <Spacer size="50px" />
     </Container>
   );
 };

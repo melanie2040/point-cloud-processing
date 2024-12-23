@@ -9,12 +9,13 @@ const PORT = 5000;
 
 
 app.use(cors()); 
-app.use(bodyParser.json()); 
+app.use(bodyParser.json({ limit: '50mb' }));  // Increase the limit
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.post('/send-email', async (req, res) => {
-  const { email } = req.body;
+  const { email, pdf } = req.body;
 
-  if (!email) {
+  if (!email || !pdf) {
     return res.status(400).json({ error: 'Email is required' });
   }
 
@@ -28,11 +29,20 @@ app.post('/send-email', async (req, res) => {
         },
   });
 
+  const pdfBuffer = Buffer.from(pdf, 'base64');
+
   const mailOptions = {
-    from: process.env.SMTP_USER,
+    from: 'hello@dconstruct.co',
     to: email,
     subject: 'Test Email',
     text: 'This is a test email sent from your server!',
+    attachments: [
+      {
+        filename: 'quotation.pdf', // Name the file as 'quotation.pdf'
+        content: pdfBuffer, // Attach the PDF buffer
+        encoding: 'base64', // Specify the encoding
+      },
+    ],
   };
 
   try {

@@ -99,6 +99,15 @@ const TabZero = ({ formData, onFormDataChange, errors }) => {
 
   let timeoutId = null;
 
+  const isValidEmail = (email)=>{
+    const emailPattern = /^.+@.+\.[a-zA-Z]{2,63}$/;
+    if (!emailPattern.test(email) || email.includes('@gmail.com') || email.includes('@yahoo.com') || email.includes('@outlook.com') || email.includes('@hotmail.com')) {
+        return false
+    }else{
+      return true;
+    }
+  }
+
   const handleEmailChange = (e) => {
     const { value } = e.target;
     onFormDataChange("email", value);
@@ -205,7 +214,7 @@ const TabZero = ({ formData, onFormDataChange, errors }) => {
           require
           margin="normal"
         />
-        {errors.email && !formData.email && <span style={{ color: 'red' }}>{errors.email}</span>}
+        {errors.email && (!formData.email || isValidEmail(formData.email) == false) && <span style={{ color: 'red' }}>{errors.email}</span>}
       </Grid>
 
       <Spacer size="30px" />

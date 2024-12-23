@@ -38,7 +38,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
     doc.text("Section 1: Basics", 20, 30);
-    
+
     // List styling with bullet points
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
@@ -46,12 +46,12 @@ const TabFive = ({ formData, onFormDataChange }) => {
     doc.text(`Contact: +${formData.countryCode} ${formData.contact}`, 20, 50);
     doc.text(`Email: ${formData.email}`, 20, 60);
     doc.text(`Country: ${formData.country}`, 20, 70);
-    doc.text(`Company: ${formData.industry}, ${formData.companyName}`, 20,80);
+    doc.text(`Company: ${formData.industry}, ${formData.companyName}`, 20, 80);
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
     doc.text("Section 2: Specifications", 20, 90);
-  
+
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.text(`I need my 3D scan for ${formData.qn1}`, 20, 100);
@@ -61,7 +61,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
     doc.text("Section 3: Site", 20, 130);
-  
+
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.text(`My site needs ${formData.qn4}`, 20, 140);
@@ -72,19 +72,74 @@ const TabFive = ({ formData, onFormDataChange }) => {
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text("Section 3: Site", 20, 190);
-  
+    doc.text("Section 3: Quotation", 20, 190);
+
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.text(`Dimensions: ${formData.width}, ${formData.length}, ${formData.height}`, 20, 200);
-  
+    doc.text(`Volume: ${formData.volume} cubic metres`, 20, 210);
+    doc.text(`Quotation: USD ${formData.quote}`, 20, 220);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("Section 4: Imagery", 20, 230);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    const date = new Date(formData.calendar);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      weekday: 'short',  // "Sat"
+      year: 'numeric',   // "2025"
+      month: 'short',    // "Jan"
+      day: 'numeric'     // "4"
+    });
+    doc.text(`Scanning Date: ${formattedDate}`, 20, 240)
+
+    // Function to add a single image to the PDF (added inside the callback)
+    function addImageToPDF(image) {
+      const imageURL = URL.createObjectURL(image);
+      return imageURL;
+    }
+
+    // Assuming you have an array of images, like form.photos
+    doc.addPage();
+    let yPosition = 30; // Starting Y position for images
+    doc.text(`Site Images: `, 20, 20)
+    console.log('one file', formData.photos[1]);
+    for (const photo of formData.photos) {
+      const url = addImageToPDF(photo);
+      doc.addImage(url, 'JPEG', 20, yPosition, 50, 30);
+      yPosition += 40;
+    }
+
+    doc.text(`Floor Plan: `, 20, yPosition);
+    yPosition += 10;
+    for (const photo of formData.floorPlan) {
+      const url = addImageToPDF(photo);
+      doc.addImage(url, 'JPEG', 20, yPosition, 50, 30);
+      yPosition += 40;
+    }
+
+
+
+    // Adjust the size and position as needed
+    ;
+
+    // Add images one by one (without a for-loop, using callback)
+    // formData.photos.forEach(function (photo, index) {
+    //   // Call the addImageToPDF function for each image
+    //   addImageToPDF(photo, yPosition + (index * 60)); // Adjust Y position for each image
+    //   console.log(photo, "photototototo");
+    // })// Add images from the 'photos' array
+    //if (formData.floorPlan.length > 0) { addImagesFromArray(formData.floorPlan) };
+
     // Save the PDF
     doc.save("download.pdf");
   };
 
 
   return (
-    <Container sx={{ mt: 5, width: "100%" }}>
+    <Container sx={{ width: "100%" }}>
       <Card variant="outlined" sx={{ marginBottom: 2, padding: 2 }}>
         Thank you for your submission. A salesperson will be in contact with you
         shortly. A copy of your quote estimation has been emailed to your
@@ -296,7 +351,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                   key={index}
                   src={URL.createObjectURL(photo)} // Create a temporary URL for the image
                   alt={`Uploaded ${index + 1}`} // Alt text for accessibility
-                  style={{ width: '50%', height: 'auto', marginBottom: '10px' }} // Style as needed
+                  style={{ width: '200px', height: 'auto', marginBottom: '10px', marginRight: '10%' }} // Style as needed
                 />
               ))
             ) : (
@@ -314,7 +369,7 @@ const TabFive = ({ formData, onFormDataChange }) => {
                   key={index}
                   src={URL.createObjectURL(plan)} // Create a temporary URL for the image
                   alt={`Uploaded ${index + 1}`} // Alt text for accessibility
-                  style={{ width: '50%', height: 'auto', marginBottom: '10px' }} // Style as needed
+                  style={{ width: '200px', height: 'auto', marginBottom: '10px', marginRight: '10%' }} // Style as needed
                 />
               ))
             ) : (
@@ -346,63 +401,7 @@ export default TabFive;
 
 
 
-// const handleSubmit = async () => {
-//   //setCurrentTab(5);
 
-//   // const doc = new jsPDF();
-
-//   // doc.setFontSize(16);
-//   // doc.text('Full name: ' + formData.firstName + ' ' + formData.lastName, 10, 10);
-//   // doc.text('Contact: ' + formData.contact, 10, 20);
-//   // doc.text('Email: ' + formData.email, 10, 30);
-//   // doc.text('Country: ' + formData.country, 10, 40);
-//   // doc.text('Industry: ' + formData.industry, 10, 50);
-//   // doc.text('Company: ' + formData.companyName, 10, 60);
-
-//   // const pdfBlob = doc.output('blob');
-//   // const pdfBase64 = await blobToBase64(pdfBlob);
-
-//   const element = document.getElementById("content");
-//   const options = {
-//     margin: [1, 0, 1, 0], // 1 inch margin
-//     html2canvas: { scale: 2 }, // Higher scale for better quality
-//     jsPDF: {
-//       unit: "in",
-//       format: "letter",
-//       orientation: "portrait",
-//     },
-//   };
-
-//   // Generate PDF as a Blob
-//   const pdfBlob = await html2pdf().from(element).set(options).output("blob");
-
-//   // Convert Blob to Base64
-//   const pdfBase64 = await blobToBase64(pdfBlob);
-
-//   const emailInput = "gdgd60358@gmail.com";
-
-//   //doc.save(`${formData.companyName}-quote-calculator.pdf`);
-
-//   await fetch("http://localhost:5000/send-email", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       email: emailInput, // Ensure emailInput is defined in your scope
-//       pdf: pdfBase64,
-//     }),
-//   })
-//     .then((response) => response.text())
-//     .then((data) => {
-//       console.log(data); // Handle success
-//       alert("Email sent successfully!"); // Notify user
-//     })
-//     .catch((error) => {
-//       console.error("There was a problem with the fetch operation:", error);
-//       alert("Failed to send email."); // Notify user
-//     });
-// };
 
 // function blobToBase64(blob) {
 //   return new Promise((resolve, reject) => {

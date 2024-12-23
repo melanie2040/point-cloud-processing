@@ -78,13 +78,13 @@ export const verifyTabTwo = (tabData) => {
 
 export const verifyTabThree = (tabData) => {
     const tabErrors = {};
-    if (!tabData.width || tabData.width === 0) {
+    if (!tabData.width || tabData.width <= 0) {
         tabErrors.width = "Please enter a valid value"
     }
-    if (!tabData.length || tabData.length === 0) {
+    if (!tabData.length || tabData.length <= 0) {
         tabErrors.length = "Please enter a valid value"
     }
-    if (!tabData.height || tabData.height === 0) {
+    if (!tabData.height || tabData.height <= 0) {
         tabErrors.height = "Please enter a valid value"
     }
     return tabErrors;
@@ -93,7 +93,7 @@ export const verifyTabThree = (tabData) => {
 
 export const verifyTabFour = (tabData) => {
     const tabErrors = {};
-    if (!tabData.photos) {
+    if (!tabData.photos || tabData.photos.length === 0) {
         tabErrors.photos = "Please upload photos of your site"
     }
     if (!tabData.calendar) {

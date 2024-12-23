@@ -31,7 +31,7 @@ const TabThree = ({ formData, onFormDataChange, errors }) => {
     if (formData.width && formData.length && formData.height && !widthError && !heightError && !lengthError) {
       const volume = formData.width * formData.length * formData.height;
       if(volume < 1){
-        alert("Invalid scanning volume");
+        setVolumeError("Invalid scanning volume");
       }else{
         onFormDataChange("volume", volume);
         const quote = calculateQuote(volume);
@@ -89,6 +89,21 @@ const TabThree = ({ formData, onFormDataChange, errors }) => {
     //calculateVolume();
   };
 
+  useEffect(()=>{
+    if(formData.width && formData.length && formData.height){
+      const volume = formData.width * formData.length * formData.height;
+      if(volume < 1){
+        setVolumeError("Invalid scanning volume");
+      }else{
+        onFormDataChange("volume", volume);
+        const quote = calculateQuote(volume);
+        onFormDataChange("quote", quote);
+        setVolumeError(null);
+      }
+    }
+
+  }, [formData.width, formData.length, formData.height])
+
   const Spacer = ({ size }) => (
     <div style={{ height: size, width: "100%" }}></div>
   );
@@ -127,7 +142,7 @@ const TabThree = ({ formData, onFormDataChange, errors }) => {
             //helperText={widthError}
             margin="normal"
           />
-          {errors.width && !formData.width && <span style={{ color: 'red' }}>{errors.width}</span>}
+          {errors.width && (!formData.width || formData.width <= 0) && <span style={{ color: 'red' }}>{errors.width}</span>}
         </Box>
 
         <Box flex={1} mr={2} minWidth="250px">
@@ -149,7 +164,7 @@ const TabThree = ({ formData, onFormDataChange, errors }) => {
             //helperText={lengthError}
             margin="normal"
           />
-          {errors.length && !formData.length && <span style={{ color: 'red' }}>{errors.length}</span>}
+          {errors.length && (!formData.length || formData.length <= 0) && <span style={{ color: 'red' }}>{errors.length}</span>}
         </Box>
 
         <Box flex={1} mr={2} minWidth="250px">
@@ -171,10 +186,13 @@ const TabThree = ({ formData, onFormDataChange, errors }) => {
             //helperText={heightError}
             margin="normal"
           />
-          {errors.height && !formData.height && <span style={{ color: 'red' }}>{errors.height}</span>}
+          {errors.height && (!formData.height || formData.height <= 0) && <span style={{ color: 'red' }}>{errors.height}</span>}
+          <div>vol: {formData.volume}</div>
+          <div>qupte: {formData.quote}</div>
         </Box>
 
       </Box>
+      <div>{volumeError}</div>
 
     </Container>
 

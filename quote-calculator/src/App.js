@@ -26,6 +26,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { AlertProvider } from "./Components/AlertContext";
 import { useAlert } from "./Components/AlertContext";
 import { Navigate, Outlet } from 'react-router-dom';
+import { generate } from "./Components/GeneratePDF";
 import { verifyTabZero, verifyTabOne, verifyTabTwo, verifyTabThree, verifyTabFour } from './Validation';
 
 const Spacer = ({ size }) => (
@@ -192,7 +193,7 @@ function App() {
         ...prevErrors,
         ["tab0"]: errors,  // Set the errors for the specific tab
       }));
-      if(isEmpty(errors)){
+      if (isEmpty(errors)) {
         setTabZeroError(false);
       }
       handleStepClick(currentStep + 1);
@@ -210,7 +211,7 @@ function App() {
         ...prevErrors,
         ["tab1"]: errors,  // Set the errors for the specific tab
       }));
-      if(isEmpty(errors)){
+      if (isEmpty(errors)) {
         setTabOneError(false);
         console.log("Erasseddd");
       }
@@ -235,7 +236,7 @@ function App() {
         ...prevErrors,
         ["tab2"]: errors,  // Set the errors for the specific tab
       }));
-      if(isEmpty(errors)){
+      if (isEmpty(errors)) {
         setTabTwoError(false);
       }
       handleStepClick(currentStep + 1);
@@ -251,7 +252,7 @@ function App() {
         ...prevErrors,
         ["tab3"]: errors,  // Set the errors for the specific tab
       }));
-      if(isEmpty(errors)){
+      if (isEmpty(errors)) {
         setTabThreeError(false);
       }
       handleStepClick(currentStep + 1);
@@ -271,41 +272,242 @@ function App() {
     }
   }
 
-  const handleSubmit = () => {
-    //console.log("Wrong tab 0");
-    //console.log(tabErrors.tab1);
-    
-    if (!isEmpty(tabErrors.tab0)) {
-      setTabZeroError(true);
-      console.log("Wrong tab 0");
-    } else {
+  const handleJump = (index) => {
+    if (currentStep === 0) {
+      const tabData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        country: formData.country,
+        contact: formData.contact,
+        industry: formData.industry,
+        companyName: formData.companyName,
+      };
+      let errors = [];
+      errors = verifyTabZero(tabData);
+      setTabErrors(prevErrors => ({
+        ...prevErrors,
+        ["tab0"]: errors,  // Set the errors for the specific tab
+      }));
+      if (isEmpty(errors)) {
+        setTabZeroError(false);
+      }
+      handleStepClick(index);
+    }
+    else if (currentStep === 1) {
+      const tabData = {
+        qn1: formData.qn1,
+        qn2: formData.qn2,
+        qn3: formData.qn3,
+      };
+      let errors = [];
+      errors = verifyTabOne(tabData);
+      console.log(errors);
+      setTabErrors(prevErrors => ({
+        ...prevErrors,
+        ["tab1"]: errors,  // Set the errors for the specific tab
+      }));
+      if (isEmpty(errors)) {
+        setTabOneError(false);
+        console.log("Erasseddd");
+      }
+      handleStepClick(index);
+    }
+    else if (currentStep === 2) {
+      const tabData = {
+        qn4: formData.qn4,
+        countryTwo: formData.countryTwo,
+        state: formData.state,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        street: formData.street,
+        unit: formData.unit,
+        qn6: formData.qn6,
+        qn7: formData.qn7,
+        qn8: formData.qn8,
+      };
+      let errors = [];
+      errors = verifyTabTwo(tabData);
+      setTabErrors(prevErrors => ({
+        ...prevErrors,
+        ["tab2"]: errors,  // Set the errors for the specific tab
+      }));
+      if (isEmpty(errors)) {
+        setTabTwoError(false);
+      }
+      handleStepClick(index);
+    } else if (currentStep === 3) {
+      const tabData = {
+        width: formData.width,
+        length: formData.length,
+        height: formData.height,
+      };
+      let errors = [];
+      errors = verifyTabThree(tabData);
+      setTabErrors(prevErrors => ({
+        ...prevErrors,
+        ["tab3"]: errors,  // Set the errors for the specific tab
+      }));
+      if (isEmpty(errors)) {
+        setTabThreeError(false);
+      }
+      handleStepClick(index);
+    } else if (currentStep === 4) {
+      const tabData = {
+        photos: formData.photos,
+        calendar: formData.calendar,
+      };
+      let errors = [];
+      errors = verifyTabFour(tabData);
+      setTabErrors(prevErrors => ({
+        ...prevErrors,
+        ["tab4"]: errors,  // Set the errors for the specific tab
+      }));
+      if (isEmpty(errors)) {
+        setTabFourError(false);
+      }
+      handleStepClick(index);
+    }
+  }
+
+  const handleSubmit = async() => {
+    let valid = true;
+
+    const tabData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      country: formData.country,
+      contact: formData.contact,
+      industry: formData.industry,
+      companyName: formData.companyName,
+    };
+    let errors = [];
+    errors = verifyTabZero(tabData);
+    setTabErrors(prevErrors => ({
+      ...prevErrors,
+      ["tab0"]: errors,  // Set the errors for the specific tab
+    }));
+    if (isEmpty(errors)) {
       setTabZeroError(false);
-    }
-    if (!isEmpty(tabErrors.tab1)) {
-      setTabOneError(true);
-      console.log("Wrong tab 1");
     } else {
+      setTabZeroError(true);
+      valid = false;
+    }
+
+    const tabData1 = {
+      qn1: formData.qn1,
+      qn2: formData.qn2,
+      qn3: formData.qn3,
+    };
+    let errors1 = [];
+    errors1 = verifyTabOne(tabData1);
+    console.log(errors1);
+    setTabErrors(prevErrors => ({
+      ...prevErrors,
+      ["tab1"]: errors1,  // Set the errors for the specific tab
+    }));
+    if (isEmpty(errors1)) {
       setTabOneError(false);
-    }
-    if (!isEmpty(tabErrors.tab2)) {
-      setTabTwoError(true);
-      console.log("Wrong tab 2");
+      console.log("Erasseddd");
     } else {
+      setTabOneError(true);
+      valid = false;
+    }
+
+    const tabData2 = {
+      qn4: formData.qn4,
+      countryTwo: formData.countryTwo,
+      state: formData.state,
+      city: formData.city,
+      postalCode: formData.postalCode,
+      street: formData.street,
+      unit: formData.unit,
+      qn6: formData.qn6,
+      qn7: formData.qn7,
+      qn8: formData.qn8,
+    };
+    let errors2 = [];
+    errors2 = verifyTabTwo(tabData2);
+    setTabErrors(prevErrors => ({
+      ...prevErrors,
+      ["tab2"]: errors2,  // Set the errors for the specific tab
+    }));
+    if (isEmpty(errors2)) {
       setTabTwoError(false);
-    }
-    if (!isEmpty(tabErrors.tab3)) {
-      setTabThreeError(true);
-      console.log("Wrong tab 3");
     } else {
+      setTabTwoError(true);
+      valid = false;
+    }
+
+    const tabData3 = {
+      width: formData.width,
+      length: formData.length,
+      height: formData.height,
+    };
+    let errors3 = [];
+    errors3 = verifyTabThree(tabData3);
+    setTabErrors(prevErrors => ({
+      ...prevErrors,
+      ["tab3"]: errors3,  // Set the errors for the specific tab
+    }));
+    if (isEmpty(errors3)) {
       setTabThreeError(false);
-    }
-    if (!isEmpty(tabErrors.tab4)) {
-      setTabFourError(true);
-      console.log("Wrong tab 4");
     } else {
-      setTabFourError(false);
+      setTabThreeError(true);
+      valid = false;
     }
-    navigate("/tab5");
+
+
+    const tabData4 = {
+      photos: formData.photos,
+      calendar: formData.calendar,
+    };
+    let errors4 = [];
+    errors4 = verifyTabFour(tabData4);
+    setTabErrors(prevErrors => ({
+      ...prevErrors,
+      ["tab4"]: errors4,  // Set the errors for the specific tab
+    }));
+    if (isEmpty(errors4)) {
+      setTabFourError(false);
+    } else {
+      setTabFourError(true);
+      valid = false;
+    }
+    if (valid == true) {
+      navigate("/tab5");
+
+      const emailInput = formData.email;
+      const doc = generate(formData);
+      const pdfBase64 = doc.output("datauristring")
+
+      //doc.save(`${formData.companyName}-quote-calculator.pdf`);
+
+      await fetch("http://localhost:5000/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: emailInput, // Ensure emailInput is defined in your scope
+          pdf: pdfBase64,
+        }),
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data); // Handle success
+          alert("Email sent successfully!"); // Notify user
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+          alert("Failed to send email."); // Notify user
+        });
+
+
+
+    }
+
   }
 
 
@@ -355,7 +557,7 @@ function App() {
                   )}
 
                   //disabled={index > currentStep && !verifyAllTabsBeforeIndex(index)}
-                  onClick={() => handleStepClick(index)}
+                  onClick={() => handleJump(index)}
                   sx={{
                     opacity: index > currentStep ? 0.5 : 1,
                     //cursor: (index > currentStep && !verifyAllTabsBeforeIndex(index)) ? 'not-allowed' : 'pointer',
@@ -430,6 +632,7 @@ function App() {
                     <TabFour
                       formData={formData}
                       onFormDataChange={handleFormDataChange}
+                      errors={tabErrors.tab4}
                     />
                   }
                 />

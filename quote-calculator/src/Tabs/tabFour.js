@@ -15,7 +15,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from 'react-router-dom'; 
 
-const TabFour = ({ formData, onFormDataChange }) => {
+const TabFour = ({ formData, onFormDataChange, errors }) => {
   const [date, setDate] = useState("");
   const [images, setImages] = useState(formData.photos);
   const [floorPlan, setFloorPlan] = useState(formData.floorPlan);
@@ -148,6 +148,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
               </ol>
             </Box>
           </Box>
+          {errors.photos && !formData.photos && <span style={{ color: 'red' }}>{errors.photos}</span>}
         </CardContent>
         <span style={{ color: 'red' }}>{imagesError}</span>
       </Card>
@@ -220,6 +221,7 @@ const TabFour = ({ formData, onFormDataChange }) => {
             />
           </Box>
           <Typography variant="h6">Selected Date: {formattedDate}</Typography>
+          {errors.calendar && !formData.calendar && <span style={{ color: 'red' }}>{errors.calendar}</span>}
         </CardContent>
         <span style={{ color: 'red' }}>{dateError}</span>
       </Card>
